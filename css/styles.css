@@ -5,6 +5,8 @@ body {
   background-color: #F8F9FA; /* Cinza Claro */
   color: #343A40; /* Cinza Escuro */
   text-align: center;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 
@@ -13,32 +15,40 @@ body {
   width: 450px;
   height: auto;
   margin-bottom: 30px;
+  max-width: 90vw;
 }
 
 .input-container {
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .color-input {
-  width: 150px;
-  height: 30px;
-  padding: 5px;
+  width: 200px;
+  height: 40px;
+  padding: 8px 12px;
   font-size: 16px;
   border: 2px solid #0056b3;
-  border-radius: 5px;
+  border-radius: 8px;
   text-transform: uppercase;
+  text-align: center;
+  max-width: 90vw;
 }
 
 .generate-btn {
-  margin-left: 10px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
   color: white;
   background-color: #0056b3;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  min-width: 150px;
 }
 
 .generate-btn:hover {
@@ -47,11 +57,12 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .color-item {
@@ -62,16 +73,17 @@ body {
 
 .color-box {
   width: 100%;
-  height: 100px;
+  height: 120px;
   margin: 0 auto;
   color: white;
   text-align: center;
-  line-height: 100px;
+  line-height: 120px;
   font-size: 14px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .color-box:hover {
@@ -82,13 +94,16 @@ body {
   font-size: 14px;
   font-weight: bold;
   color: #343A40; /* Cinza Escuro */
-  margin-top: 10px;
+  margin-top: 12px;
   text-align: center;
+  line-height: 1.4;
+  padding: 0 10px;
 }
 
 footer {
   margin-top: 50px;
   font-size: 14px;
+  padding: 20px;
 }
 
 footer a {
@@ -102,17 +117,131 @@ footer a:hover {
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .container {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    padding: 0 15px;
   }
-  
-  h1 {
-    font-size: 36px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
   }
   
   .logo {
     width: 350px;
+    margin-bottom: 25px;
+  }
+  
+  .input-container {
+    margin-bottom: 25px;
+    gap: 12px;
+  }
+  
+  .color-input {
+    width: 180px;
+    height: 45px;
+    font-size: 15px;
+  }
+  
+  .generate-btn {
+    padding: 14px 28px;
+    font-size: 15px;
+    min-width: 140px;
+  }
+  
+  .container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 0 10px;
+  }
+  
+  .color-box {
+    height: 100px;
+    line-height: 100px;
+    font-size: 13px;
+  }
+  
+  .description {
+    font-size: 13px;
+    margin-top: 10px;
+    padding: 0 5px;
+  }
+  
+  footer {
+    margin-top: 40px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  .logo {
+    width: 280px;
+    margin-bottom: 20px;
+  }
+  
+  .input-container {
+    margin-bottom: 20px;
+    gap: 10px;
+  }
+  
+  .color-input {
+    width: 160px;
+    height: 42px;
+    font-size: 14px;
+  }
+  
+  .generate-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    min-width: 130px;
+  }
+  
+  .container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 5px;
+  }
+  
+  .color-box {
+    height: 90px;
+    line-height: 90px;
+    font-size: 12px;
+  }
+  
+  .description {
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 0 3px;
+  }
+  
+  footer {
+    margin-top: 30px;
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo {
+    width: 240px;
+  }
+  
+  .color-input {
+    width: 140px;
+    height: 40px;
+    font-size: 13px;
+  }
+  
+  .generate-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 120px;
   }
 } 
