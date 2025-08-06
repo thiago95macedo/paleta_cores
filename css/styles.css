@@ -236,25 +236,28 @@ footer {
   margin-top: auto;
   padding: 30px 20px;
   text-align: center;
-  background-color: #c0c0c0; /* Fundo Alternativo */
-  border-top: 1px solid #b3b3b3; /* Bordas Claras */
+  background-color: #0056b3; /* Ações primárias, botões principais, links ativos */
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil branca */
 }
 
 footer p {
-  color: #666666; /* Textos Principais */
+  color: #ffffff; /* Texto branco para máximo contraste */
   font-size: 14px;
+  font-weight: 500;
 }
 
 footer a {
-  color: #0056b3; /* Botão/Ação Principal */
+  color: #ffffff; /* Texto branco */
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
 }
 
 footer a:hover {
-  color: #4896eb; /* Hover/Destaque */
-  text-decoration: underline;
+  color: #5a9ee7; /* Estados hover, destaques suaves */
+  border-bottom: 1px solid #5a9ee7;
+  text-decoration: none;
 }
 
 /* Responsividade */
