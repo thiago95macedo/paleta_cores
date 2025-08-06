@@ -2,8 +2,8 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 20px;
-  background-color: #F8F9FA; /* Cinza Claro */
-  color: #343A40; /* Cinza Escuro */
+  background-color: #c0c0c0; /* Neutro Mais Claro - Background principal */
+  color: #262626; /* Neutro Escuro - Textos secundários */
   text-align: center;
   min-height: 100vh;
   box-sizing: border-box;
@@ -32,12 +32,14 @@ body {
   height: 48px;
   padding: 8px 12px;
   font-size: 16px;
-  border: 2px solid #0056b3;
+  border: 2px solid #0056b3; /* Cor Principal */
   border-radius: 8px;
   text-transform: uppercase;
   text-align: center;
   max-width: 90vw;
   box-sizing: border-box;
+  background-color: #c0c0c0; /* Neutro Mais Claro */
+  color: #262626; /* Neutro Escuro */
 }
 
 .generate-btn {
@@ -45,7 +47,7 @@ body {
   height: 48px;
   font-size: 16px;
   color: white;
-  background-color: #0056b3;
+  background-color: #0056b3; /* Cor Principal */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -55,8 +57,10 @@ body {
 }
 
 .generate-btn:hover {
-  background-color: #003C7D;
+  background-color: #006fe6; /* Cor Clara - Estados hover */
 }
+
+
 
 .container {
   display: grid;
@@ -87,6 +91,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
+  border: 2px solid #8c8c8c; /* Neutro Claro - Bordas */
 }
 
 .color-box:hover {
@@ -96,7 +101,7 @@ body {
 .description {
   font-size: 14px;
   font-weight: bold;
-  color: #343A40; /* Cinza Escuro */
+  color: #262626; /* Neutro Escuro - Textos secundários */
   margin-top: 12px;
   text-align: center;
   line-height: 1.4;
@@ -110,12 +115,13 @@ footer {
 }
 
 footer a {
-  color: #0056b3;
+  color: #0056b3; /* Cor Principal */
   font-weight: bold;
   text-decoration: none;
 }
 
 footer a:hover {
+  color: #006fe6; /* Cor Clara - Estados hover */
   text-decoration: underline;
 }
 
