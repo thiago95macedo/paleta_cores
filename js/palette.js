@@ -308,40 +308,41 @@ function generateIntelligentNeutrals(primaryHsl) {
 
 // Sistema de cores profissional refatorado
 function generateProfessionalPalette(primaryColor) {
-  const rgb = hexToRgb(primaryColor);
-  const primaryHsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-  const [h, s, l] = primaryHsl;
-
-  // 1. Cores principais com variações controladas
-  const primaryColors = {
-    primary: primaryColor,
-    primaryLight: generateOptimizedColor(
-      h,
-      Math.max(0, s - 25), // Reduz saturação significativamente
-      Math.min(100, l + 28) // Aumenta luminância
-    ),
-    primaryDark: generateOptimizedColor(
-      h,
-      Math.min(100, s + 8), // Leve aumento na saturação
-      Math.max(0, l - 28)   // Reduz luminância
-    )
+  // Paleta fixa baseada na cor principal #0056b3
+  const palette = {
+    // Cores principais
+    primary: '#0056b3', // Ações primárias, botões principais, links ativos
+    primaryLight: '#5a9ee7', // Estados hover, destaques suaves, backgrounds secundários
+    primaryDark: '#001124', // Estados ativos/pressed, overlays, headers
+    
+    // Cores de feedback
+    success: '#16a34a', // Confirmações, notificações positivas, status de sucesso
+    error: '#dc2626', // Erros críticos, validações negativas, alertas de falha
+    warning: '#eab308', // Avisos importantes, alertas não-críticos, atenção
+    info: '#3b82f6', // Informações contextuais, tooltips, mensagens neutras
+    
+    // Harmônicos
+    analogous1: '#0093a4', // Elementos secundários, ícones de apoio, gráficos
+    analogous2: '#000aa4', // Diferenciação sutil, bordas especiais, micro-interações
+    triadic1: '#92084a', // Acentos visuais, elementos distintivos, CTAs secundários
+    triadic2: '#4a9208', // Variações temáticas, categorização, elementos decorativos
+    complementary: '#80470a', // Contraste máximo, elementos opostos, destaque extremo
+    
+    // Neutros
+    white: '#ffffff', // Fundo principal, cards, áreas de conteúdo
+    gray100: '#f5f5f5', // Backgrounds alternativos, superfícies secundárias
+    gray200: '#ededed', // Bordas suaves, divisores sutis
+    gray300: '#dee0e3', // Divisores padrão, bordas de campos
+    gray400: '#b7bcc2', // Bordas destacadas, elementos desabilitados
+    gray500: '#969ea6', // Textos secundários, legendas, metadados
+    gray600: '#6c757f', // Ícones padrão, textos terciários
+    gray700: '#596169', // Textos de apoio, labels
+    gray800: '#3d4248', // Textos principais, conteúdo primário
+    gray900: '#1e2124', // Títulos, cabeçalhos, textos importantes
+    black: '#000000' // Textos de máximo contraste, elementos críticos
   };
 
-  // 2. Cores de feedback FIXAS (não derivadas da primária)
-  const feedbackColors = FEEDBACK_COLORS;
-
-  // 3. Harmônicos melhorados
-  const harmonicColors = generateImprovedHarmonics(primaryHsl);
-
-  // 4. Neutros inteligentes
-  const neutralColors = generateIntelligentNeutrals(primaryHsl);
-
-  return {
-    ...primaryColors,
-    ...feedbackColors,
-    ...harmonicColors,
-    ...neutralColors
-  };
+  return palette;
 }
 
 function generatePalette() {

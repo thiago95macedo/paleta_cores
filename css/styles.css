@@ -62,7 +62,7 @@ body {
 
 /* Botão Exportar */
 .export-btn {
-  background-color: #4a9208; /* Ações primárias, botões principais */
+  background-color: #0056b3; /* Ações primárias, botões principais */
   color: #ffffff; /* Texto branco para máximo contraste */
   border: none;
   padding: 12px 20px;
@@ -77,14 +77,14 @@ body {
 }
 
 .export-btn:hover {
-  background-color: #6bbf1a; /* Estados hover, destaques suaves */
+  background-color: #5a9ee7; /* Estados hover, destaques suaves */
   color: #ffffff; /* Mantém texto branco */
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .export-btn:active {
-  background-color: #2d5a05; /* Estados ativos/pressed */
+  background-color: #001124; /* Estados ativos/pressed */
   color: #ffffff; /* Mantém texto branco */
   transform: translateY(0);
 }
@@ -236,7 +236,7 @@ footer {
   margin-top: auto;
   padding: 30px 20px;
   text-align: center;
-  background-color: #4a9208; /* Ações primárias, botões principais, links ativos */
+  background-color: #0056b3; /* Ações primárias, botões principais, links ativos */
   border-top: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil branca */
 }
 
@@ -255,8 +255,8 @@ footer a {
 }
 
 footer a:hover {
-  color: #6bbf1a; /* Estados hover, destaques suaves */
-  border-bottom: 1px solid #6bbf1a;
+  color: #5a9ee7; /* Estados hover, destaques suaves */
+  border-bottom: 1px solid #5a9ee7;
   text-decoration: none;
 }
 
