@@ -1,96 +1,138 @@
-body {
-  font-family: Arial, sans-serif;
+/* Reset e configurações base */
+* {
   margin: 0;
-  padding: 20px;
-  background-color: #c0c0c0; /* Neutro Mais Claro - Background principal, espaços em branco */
-  color: #000000; /* Neutro Mais Escuro - Textos principais, títulos, navegação */
-  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff; /* Fundo - Branco */
+  color: #000000; /* Texto Principal - Preto */
+  line-height: 1.6;
   min-height: 100vh;
-  box-sizing: border-box;
-}
-
-
-
-.logo {
-  width: 500px;
-  height: auto;
-  margin-bottom: 30px;
-  max-width: 90vw;
-}
-
-.input-container {
-  margin-bottom: 30px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+}
+
+/* Logo */
+.logo {
+  width: 200px;
+  height: auto;
+  margin: 30px auto;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Container principal */
+.input-container {
+  display: flex;
   justify-content: center;
+  align-items: center;
   gap: 15px;
+  margin: 20px auto 40px;
+  max-width: 600px;
+  padding: 0 20px;
+  flex-wrap: wrap;
 }
 
+/* Campo de entrada */
 .color-input {
-  width: 150px;
+  width: 280px;
   height: 48px;
-  padding: 8px 12px;
-  font-size: 16px;
-  border: 2px solid #5a5a5a; /* Neutro Médio - Bordas, divisórias, elementos estruturais */
+  padding: 12px 16px;
+  border: 2px solid #999999; /* Bordas */
   border-radius: 8px;
-  text-transform: uppercase;
-  text-align: center;
-  max-width: 90vw;
-  box-sizing: border-box;
-  background-color: #8c8c8c; /* Neutro Claro - Backgrounds secundários, cards, containers */
-  color: #000000; /* Neutro Mais Escuro - Textos principais, títulos, navegação */
+  font-size: 16px;
+  background-color: #ffffff; /* Fundo */
+  color: #000000; /* Texto Principal */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.color-input:focus {
+  outline: none;
+  border-color: #0056b3; /* Botão/Ação Principal */
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+.color-input::placeholder {
+  color: #8c8c8c; /* Textos Secundários */
+}
+
+/* Botões */
 .generate-btn, .export-btn {
-  background-color: #0056b3;
-  color: white;
+  background-color: #0056b3; /* Botão/Ação Principal */
+  color: #ffffff; /* Texto ideal para fundo azul */
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   height: 48px;
   min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .generate-btn:hover, .export-btn:hover {
-  background-color: #006fe6;
+  background-color: #4896eb; /* Hover/Destaque */
+  color: #000000; /* Texto ideal para fundo claro */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.generate-btn:active, .export-btn:active {
+  background-color: #000c1a; /* Ativo/Foco */
+  color: #ffffff; /* Texto ideal para fundo escuro */
+  transform: translateY(0);
 }
 
 .export-btn {
-  background-color: #16a34a;
-  margin-left: 10px;
+  background-color: #009a00; /* Sucesso */
+  color: #000000; /* Texto ideal para fundo verde */
 }
 
 .export-btn:hover {
-  background-color: #15803d;
+  background-color: #4a9a00; /* Contraste - verde mais claro */
+  color: #000000;
 }
 
+.export-btn:active {
+  background-color: #009a00; /* Sucesso */
+  color: #000000;
+}
 
-
+/* Container de cores */
 .container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px;
-  justify-content: center;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   padding: 0 20px;
 }
 
+/* Cards de cores */
 .color-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #c0c0c0; /* Fundo Alternativo */
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #b3b3b3; /* Bordas Claras */
+}
+
+.color-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .color-box {
   width: 100%;
   height: 80px;
-  border: 2px solid #5a5a5a;
+  border: 2px solid #999999; /* Bordas */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -102,22 +144,25 @@ body {
   position: relative;
   overflow: hidden;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 14px;
 }
 
 .color-box:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #0056b3; /* Botão/Ação Principal */
 }
 
 .color-box.clicked {
   transform: scale(0.95);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-color: #4896eb; /* Hover/Destaque */
 }
 
 .description {
   margin-top: 8px;
   font-size: 14px;
-  color: #262626;
+  color: #666666; /* Textos Principais */
   text-align: center;
   font-weight: 500;
 }
@@ -129,7 +174,7 @@ body {
 
 .accessibility-info small {
   display: block;
-  color: #666;
+  color: #8c8c8c; /* Textos Secundários */
   font-size: 12px;
   margin-bottom: 6px;
 }
@@ -142,40 +187,25 @@ body {
 }
 
 .format-btn {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  background-color: #a6a6a6; /* Divisores */
+  border: 1px solid #999999; /* Bordas */
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 11px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #333;
+  color: #000000; /* Texto ideal para fundo cinza */
 }
 
 .format-btn:hover {
-  background-color: #e0e0e0;
-  border-color: #bbb;
+  background-color: #b3b3b3; /* Bordas Claras */
+  border-color: #0056b3; /* Botão/Ação Principal */
+  color: #000000;
 }
 
 .format-btn:active {
   transform: scale(0.95);
-}
-
-footer {
-  margin-top: 50px;
-  font-size: 14px;
-  padding: 20px;
-}
-
-footer a {
-  color: #0056b3; /* Cor Principal */
-  font-weight: bold;
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: #006fe6; /* Cor Clara - Estados hover */
-  text-decoration: underline;
+  background-color: #999999; /* Bordas */
 }
 
 /* Notificação Toast */
@@ -183,173 +213,117 @@ footer a:hover {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #28A745;
-  color: white;
+  background-color: #009a00; /* Sucesso */
+  color: #000000; /* Texto ideal para fundo verde */
   padding: 12px 20px;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateX(400px);
-  transition: transform 0.3s ease;
   z-index: 1000;
-  max-width: 300px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border: 1px solid #4a9a00; /* Contraste */
 }
 
 .toast-notification.show {
+  opacity: 1;
   transform: translateX(0);
 }
 
 .toast-notification.error {
-  background: #DC3545;
+  background-color: #9a0000; /* Erro */
+  color: #ffffff; /* Texto ideal para fundo vermelho */
+  border-color: #9a4d00; /* Aviso */
+}
+
+/* Rodapé */
+footer {
+  margin-top: auto;
+  padding: 30px 20px;
+  text-align: center;
+  background-color: #c0c0c0; /* Fundo Alternativo */
+  border-top: 1px solid #b3b3b3; /* Bordas Claras */
+}
+
+footer p {
+  color: #666666; /* Textos Principais */
+  font-size: 14px;
+}
+
+footer a {
+  color: #0056b3; /* Botão/Ação Principal */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #4896eb; /* Hover/Destaque */
+  text-decoration: underline;
 }
 
 /* Responsividade */
-@media (max-width: 1400px) {
-  .container {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    padding: 0 15px;
-  }
-}
-
 @media (max-width: 1200px) {
   .container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    padding: 0 15px;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  body {
-    padding: 15px;
-  }
-  
-  .logo {
-    width: 400px;
-    margin-bottom: 25px;
-  }
-  
-  .input-container {
-    margin-bottom: 25px;
-    gap: 12px;
-  }
-  
-  .color-input {
-    width: 120px;
-    height: 48px;
-    font-size: 15px;
-  }
-  
-  .generate-btn {
-    width: 120px;
-    height: 48px;
-    font-size: 15px;
-  }
-  
   .container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    padding: 0 10px;
-  }
-  
-  .color-box {
-    height: 100px;
-    line-height: 100px;
-    font-size: 13px;
-  }
-  
-  .description {
-    font-size: 13px;
-    margin-top: 10px;
-    padding: 0 5px;
-  }
-  
-  footer {
-    margin-top: 40px;
-    padding: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
   }
   
   .logo {
-    width: 320px;
-    margin-bottom: 20px;
+    width: 150px;
+    margin: 20px auto;
   }
   
   .input-container {
-    margin-bottom: 20px;
+    flex-direction: column;
     gap: 10px;
   }
   
   .color-input {
-    width: 100px;
-    height: 48px;
-    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
   }
-  
-  .generate-btn {
-    width: 100px;
-    height: 48px;
-    font-size: 14px;
-  }
-  
+}
+
+@media (max-width: 480px) {
   .container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 0 5px;
+    padding: 0 15px;
+  }
+  
+  .color-item {
+    padding: 12px;
   }
   
   .color-box {
-    height: 90px;
-    line-height: 90px;
+    height: 70px;
     font-size: 12px;
   }
   
   .description {
     font-size: 12px;
-    margin-top: 8px;
-    padding: 0 3px;
   }
   
-  footer {
-    margin-top: 30px;
-    padding: 10px;
-    font-size: 13px;
+  .format-btn {
+    font-size: 10px;
+    padding: 3px 6px;
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 320px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  
   .logo {
-    width: 280px;
-  }
-  
-  .color-input {
-    width: 90px;
-    height: 48px;
-    font-size: 13px;
-  }
-  
-  .generate-btn {
-    width: 90px;
-    height: 48px;
-    font-size: 13px;
-  }
-  
-  .toast-notification {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    max-width: none;
-    transform: translateY(-100px);
-  }
-  
-  .toast-notification.show {
-    transform: translateY(0);
+    width: 120px;
   }
 } 
