@@ -207,8 +207,8 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #009a00; /* Sucesso */
-  color: #000000; /* Texto ideal para fundo verde */
+  background-color: #16a34a; /* Confirmações, notificações positivas, status de sucesso */
+  color: #ffffff; /* Texto branco para máximo contraste */
   padding: 12px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -217,7 +217,7 @@ body {
   transform: translateX(100%);
   transition: all 0.3s ease;
   font-weight: 500;
-  border: 1px solid #4a9a00; /* Contraste */
+  border: 1px solid rgba(22, 163, 74, 0.3); /* Borda sutil da mesma cor */
 }
 
 .toast-notification.show {
@@ -226,9 +226,9 @@ body {
 }
 
 .toast-notification.error {
-  background-color: #9a0000; /* Erro */
-  color: #ffffff; /* Texto ideal para fundo vermelho */
-  border-color: #9a4d00; /* Aviso */
+  background-color: #dc2626; /* Erros críticos, validações negativas, alertas de falha */
+  color: #ffffff; /* Texto branco para máximo contraste */
+  border-color: rgba(220, 38, 38, 0.3); /* Borda sutil da mesma cor */
 }
 
 /* Rodapé */
