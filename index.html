@@ -138,76 +138,51 @@
       return rgbToHex(rgb[0], rgb[1], rgb[2]);
     }
 
-    // Cores análogas (30° de diferença)
-    function getAnalogousColors(h, s, l) {
-      return [
-        generateHslColor((h - 30 + 360) % 360, s, l),
-        generateHslColor((h + 30) % 360, s, l)
-      ];
-    }
+    // Sistema de cores mais inteligente
+    function generateSmartPalette(primaryColor) {
+      const rgb = hexToRgb(primaryColor);
+      const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-    // Cores triádicas (120° de diferença)
-    function getTriadicColors(h, s, l) {
-      return [
-        generateHslColor((h + 120) % 360, s, l),
-        generateHslColor((h + 240) % 360, s, l)
-      ];
-    }
-
-    // Cor complementar (180° de diferença)
-    function getComplementaryColor(h, s, l) {
-      return generateHslColor((h + 180) % 360, s, l);
-    }
-
-    // Variações de luminosidade
-    function getLightnessVariations(h, s, l) {
-      return {
-        lighter: generateHslColor(h, s, Math.min(100, l + 20)),
-        light: generateHslColor(h, s, Math.min(100, l + 10)),
-        dark: generateHslColor(h, s, Math.max(0, l - 10)),
-        darker: generateHslColor(h, s, Math.max(0, l - 20))
-      };
-    }
-
-    // Variações de saturação
-    function getSaturationVariations(h, s, l) {
-      return {
+      const palette = {
+        // CORES PRINCIPAIS (baseadas na cor principal)
+        primary: primaryColor,
+        primaryLight: generateHslColor(h, s, Math.min(100, l + 15)),
+        primaryDark: generateHslColor(h, s, Math.max(0, l - 15)),
+        
+        // CORES NEUTRAS (incluindo branco)
+        white: '#ffffff',
+        gray50: '#fafafa',
+        gray100: '#f5f5f5',
+        gray200: '#eeeeee',
+        gray300: '#e0e0e0',
+        gray400: '#bdbdbd',
+        gray500: '#9e9e9e',
+        gray600: '#757575',
+        gray700: '#616161',
+        gray800: '#424242',
+        gray900: '#212121',
+        black: '#000000',
+        
+        // CORES FUNCIONAIS (baseadas na cor principal mas com matizes específicos)
+        success: generateHslColor(120, Math.min(100, s + 10), l), // Verde
+        error: generateHslColor(0, Math.min(100, s + 10), l),     // Vermelho
+        warning: generateHslColor(30, Math.min(100, s + 10), l),  // Laranja
+        info: generateHslColor(210, Math.min(100, s + 10), l),    // Azul
+        
+        // CORES DE HARMONIA
+        analogous1: generateHslColor((h - 30 + 360) % 360, s, l),
+        analogous2: generateHslColor((h + 30) % 360, s, l),
+        triadic1: generateHslColor((h + 120) % 360, s, l),
+        triadic2: generateHslColor((h + 240) % 360, s, l),
+        complementary: generateHslColor((h + 180) % 360, s, l),
+        
+        // VARIAÇÕES DE SATURAÇÃO
         saturated: generateHslColor(h, Math.min(100, s + 20), l),
         muted: generateHslColor(h, Math.max(0, s - 20), l),
         desaturated: generateHslColor(h, Math.max(0, s - 40), l)
       };
-    }
 
-    // Cores funcionais adaptativas
-    function getAdaptiveFunctionalColors(h, s, l) {
-      // Sucesso: Verde baseado na cor principal
-      const successH = 120; // Verde
-      const successColor = generateHslColor(successH, Math.min(100, s + 10), l);
-      
-      // Erro: Vermelho baseado na cor principal
-      const errorH = 0; // Vermelho
-      const errorColor = generateHslColor(errorH, Math.min(100, s + 10), l);
-      
-      // Alerta: Laranja baseado na cor principal
-      const warningH = 30; // Laranja
-      const warningColor = generateHslColor(warningH, Math.min(100, s + 10), l);
-      
-      // Info: Azul baseado na cor principal
-      const infoH = 210; // Azul
-      const infoColor = generateHslColor(infoH, Math.min(100, s + 10), l);
-
-      return { successColor, errorColor, warningColor, infoColor };
-    }
-
-    // Cores neutras adaptativas
-    function getAdaptiveNeutralColors(l) {
-      return {
-        lightest: generateHslColor(0, 0, Math.min(100, l + 40)),
-        light: generateHslColor(0, 0, Math.min(100, l + 20)),
-        medium: generateHslColor(0, 0, l),
-        dark: generateHslColor(0, 0, Math.max(0, l - 20)),
-        darkest: generateHslColor(0, 0, Math.max(0, l - 40))
-      };
+      return palette;
     }
 
     function generatePalette() {
@@ -217,58 +192,46 @@
         return;
       }
 
-      // Converter para HSL
-      const rgb = hexToRgb(primaryColor);
-      const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-
-      // Gerar todas as variações
-      const lightnessVars = getLightnessVariations(h, s, l);
-      const saturationVars = getSaturationVariations(h, s, l);
-      const analogousColors = getAnalogousColors(h, s, l);
-      const triadicColors = getTriadicColors(h, s, l);
-      const complementaryColor = getComplementaryColor(h, s, l);
-      const functionalColors = getAdaptiveFunctionalColors(h, s, l);
-      const neutralColors = getAdaptiveNeutralColors(l);
-
-      // Limpar container
+      const palette = generateSmartPalette(primaryColor);
       const paletteContainer = document.getElementById('paletteContainer');
       paletteContainer.innerHTML = '';
 
-      // 1. COR PRINCIPAL E VARIAÇÕES
-      addColorBox(paletteContainer, primaryColor, 'Cor Principal - Botões primários, links principais, elementos de destaque');
-      addColorBox(paletteContainer, lightnessVars.light, 'Cor Clara - Estados hover, destaques suaves, backgrounds sutis');
-      addColorBox(paletteContainer, lightnessVars.lighter, 'Cor Mais Clara - Backgrounds muito claros, espaços negativos');
-      addColorBox(paletteContainer, lightnessVars.dark, 'Cor Escura - Textos sobre fundos claros, elementos interativos');
-      addColorBox(paletteContainer, lightnessVars.darker, 'Cor Mais Escura - Textos importantes, alto contraste');
+      // 1. CORES PRINCIPAIS
+      addColorBox(paletteContainer, palette.primary, 'Cor Principal - Botões primários, links principais');
+      addColorBox(paletteContainer, palette.primaryLight, 'Cor Clara - Estados hover, destaques suaves');
+      addColorBox(paletteContainer, palette.primaryDark, 'Cor Escura - Textos sobre fundos claros');
 
-      // 2. VARIAÇÕES DE SATURAÇÃO
-      addColorBox(paletteContainer, saturationVars.saturated, 'Cor Saturada - Elementos de destaque, CTAs, badges');
-      addColorBox(paletteContainer, saturationVars.muted, 'Cor Suave - Elementos secundários, bordas, divisórias');
-      addColorBox(paletteContainer, saturationVars.desaturated, 'Cor Desaturada - Backgrounds, elementos de baixa prioridade');
+      // 2. CORES NEUTRAS (incluindo branco)
+      addColorBox(paletteContainer, palette.white, 'Branco - Fundos principais, espaços em branco');
+      addColorBox(paletteContainer, palette.gray50, 'Cinza 50 - Backgrounds muito claros');
+      addColorBox(paletteContainer, palette.gray100, 'Cinza 100 - Backgrounds claros');
+      addColorBox(paletteContainer, palette.gray200, 'Cinza 200 - Bordas claras');
+      addColorBox(paletteContainer, palette.gray300, 'Cinza 300 - Divisórias');
+      addColorBox(paletteContainer, palette.gray400, 'Cinza 400 - Textos secundários');
+      addColorBox(paletteContainer, palette.gray500, 'Cinza 500 - Textos médios');
+      addColorBox(paletteContainer, palette.gray600, 'Cinza 600 - Textos principais');
+      addColorBox(paletteContainer, palette.gray700, 'Cinza 700 - Textos importantes');
+      addColorBox(paletteContainer, palette.gray800, 'Cinza 800 - Alto contraste');
+      addColorBox(paletteContainer, palette.gray900, 'Cinza 900 - Máximo contraste');
+      addColorBox(paletteContainer, palette.black, 'Preto - Textos críticos, títulos');
 
-      // 3. CORES ANÁLOGAS
-      addColorBox(paletteContainer, analogousColors[0], 'Cor Análoga 1 - Elementos relacionados, navegação secundária');
-      addColorBox(paletteContainer, analogousColors[1], 'Cor Análoga 2 - Elementos complementares, destaques alternativos');
+      // 3. CORES FUNCIONAIS
+      addColorBox(paletteContainer, palette.success, 'Sucesso - Confirmações, estados positivos');
+      addColorBox(paletteContainer, palette.error, 'Erro - Avisos críticos, validações negativas');
+      addColorBox(paletteContainer, palette.warning, 'Alerta - Notificações importantes');
+      addColorBox(paletteContainer, palette.info, 'Informação - Tooltips, mensagens');
 
-      // 4. CORES TRIÁDICAS
-      addColorBox(paletteContainer, triadicColors[0], 'Cor Triádica 1 - Acentos, elementos especiais, CTAs secundários');
-      addColorBox(paletteContainer, triadicColors[1], 'Cor Triádica 2 - Destaques, elementos únicos, alertas especiais');
+      // 4. CORES DE HARMONIA
+      addColorBox(paletteContainer, palette.analogous1, 'Análoga 1 - Elementos relacionados');
+      addColorBox(paletteContainer, palette.analogous2, 'Análoga 2 - Elementos complementares');
+      addColorBox(paletteContainer, palette.triadic1, 'Triádica 1 - Acentos, elementos especiais');
+      addColorBox(paletteContainer, palette.triadic2, 'Triádica 2 - Destaques únicos');
+      addColorBox(paletteContainer, palette.complementary, 'Complementar - Contraste máximo');
 
-      // 5. COR COMPLEMENTAR
-      addColorBox(paletteContainer, complementaryColor, 'Cor Complementar - Contraste máximo, elementos críticos, CTAs de emergência');
-
-      // 6. CORES FUNCIONAIS ADAPTATIVAS
-      addColorBox(paletteContainer, functionalColors.successColor, 'Sucesso - Confirmações, estados positivos, validações');
-      addColorBox(paletteContainer, functionalColors.errorColor, 'Erro - Avisos críticos, validações negativas, alertas');
-      addColorBox(paletteContainer, functionalColors.warningColor, 'Alerta - Notificações importantes, avisos preventivos');
-      addColorBox(paletteContainer, functionalColors.infoColor, 'Informação - Tooltips, mensagens informativas, ajuda');
-
-      // 7. CORES NEUTRAS ADAPTATIVAS
-      addColorBox(paletteContainer, neutralColors.lightest, 'Neutro Mais Claro - Background principal, espaços em branco');
-      addColorBox(paletteContainer, neutralColors.light, 'Neutro Claro - Backgrounds secundários, cards, containers');
-      addColorBox(paletteContainer, neutralColors.medium, 'Neutro Médio - Bordas, divisórias, elementos estruturais');
-      addColorBox(paletteContainer, neutralColors.dark, 'Neutro Escuro - Textos secundários, labels, metadados');
-      addColorBox(paletteContainer, neutralColors.darkest, 'Neutro Mais Escuro - Textos principais, títulos, navegação');
+      // 5. VARIAÇÕES DE SATURAÇÃO
+      addColorBox(paletteContainer, palette.saturated, 'Saturada - Elementos de destaque, CTAs');
+      addColorBox(paletteContainer, palette.muted, 'Suave - Elementos secundários');
+      addColorBox(paletteContainer, palette.desaturated, 'Desaturada - Backgrounds, baixa prioridade');
     }
 
     function addColorBox(container, color, description) {
