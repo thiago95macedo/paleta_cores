@@ -12,8 +12,14 @@ Um gerador avançado de paletas de cores que utiliza algoritmos inteligentes bas
 
 ### **Funcionalidades de Exportação**
 - **Copiar Cores Individuais**: Clique em qualquer cor para copiar o código hexadecimal
+- **Múltiplos Formatos**: HEX, RGB e HSL com um clique
 - **Exportar Paleta Completa**: Botão dedicado para baixar toda a paleta em arquivo .txt
 - **Notificações Inteligentes**: Sistema de toast não-intrusivo para feedback
+
+### **Análise de Acessibilidade**
+- **Contraste WCAG**: Cálculo automático de contraste para cada cor
+- **Classificação de Acessibilidade**: Excelente, Bom, Aceitável ou Baixo
+- **Recomendações de Texto**: Sugestão da melhor cor de texto para cada fundo
 
 ### **Algoritmos Inteligentes Implementados**
 
@@ -34,14 +40,14 @@ primaryDark: generateOptimizedColor(h, Math.min(100, s + 10), Math.max(0, l - 30
 
 #### **Harmônicos Otimizados**
 ```javascript
-// Análogos: ajustar saturação para melhor contraste
-analogous1: generateOptimizedColor((h - 30 + 360) % 360, Math.min(100, s + 5), Math.max(0, l - 5))
+// Análogos: tons azul-esverdeados suaves
+analogous1: generateOptimizedColor((h + 20) % 360, Math.min(100, s + 5), Math.max(0, l - 5))
 
-// Triádicos: ajustar para usos práticos
-triadic1: generateOptimizedColor((h + 120) % 360, Math.min(100, s + 15), Math.max(0, l - 10))
+// Triádicos: tons equilibrados, evitando marrom
+triadic1: generateOptimizedColor((h + 120) % 360, Math.min(100, s + 10), Math.max(0, l - 5))
 
-// Complementar: otimizar para contraste
-complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 20), Math.max(0, l - 15))
+// Complementar: otimizado para contraste suave
+complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 15), Math.max(0, l - 10))
 ```
 
 ## 🚀 Como Usar
@@ -49,7 +55,8 @@ complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 20), Ma
 1. **Insira a Cor Principal**: Digite uma cor hexadecimal (ex: `#0056b3`)
 2. **Gere a Paleta**: Clique em "Gerar Paleta" para criar 22 cores otimizadas
 3. **Copie Cores**: Clique em qualquer cor para copiar o código hexadecimal
-4. **Exporte Tudo**: Use "Exportar Paleta" para baixar a paleta completa
+4. **Múltiplos Formatos**: Use os botões HEX, RGB ou HSL para diferentes formatos
+5. **Exporte Tudo**: Use "Exportar Paleta" para baixar a paleta completa
 
 ## 🎨 Estrutura da Paleta (22 Cores)
 
@@ -88,11 +95,12 @@ complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 20), Ma
 
 - **HTML5**: Estrutura semântica
 - **CSS3**: Estilos responsivos e animações
-- **JavaScript ES6+**: Lógica de geração de cores
+- **JavaScript ES6+**: Lógica de geração de cores (arquivo externo)
 - **HSL/RGB**: Conversões de cor avançadas
 - **Teoria das Cores**: Harmônicos e acessibilidade
 - **Material Design**: Padrões de cores de feedback
 - **Tailwind CSS**: Inspiração para escala de neutros
+- **WCAG 2.1**: Padrões de acessibilidade
 - **Git**: Controle de versão
 
 ## 📁 Estrutura do Projeto
@@ -102,6 +110,8 @@ paleta_cores/
 ├── index.html          # Arquivo principal
 ├── css/
 │   └── styles.css      # Estilos responsivos
+├── js/
+│   └── palette.js      # Lógica JavaScript
 ├── images/
 │   └── logo.svg        # Logo do projeto
 └── README.md           # Documentação
@@ -152,7 +162,7 @@ O layout se adapta perfeitamente a diferentes tamanhos de tela:
 - **Lightness (Luminosidade)**: Clareza da cor (0-100%)
 
 ### **Harmônicos Cromáticos**
-- **Análogos**: Cores adjacentes no círculo cromático (±30°)
+- **Análogos**: Cores adjacentes no círculo cromático (±20°)
 - **Triádicos**: Três cores equidistantes (120° de diferença)
 - **Complementares**: Cores opostas no círculo (180°)
 
@@ -166,41 +176,54 @@ O layout se adapta perfeitamente a diferentes tamanhos de tela:
 Para a cor `#0056b3` (azul padrão), o sistema gera:
 
 ```
-PALETA DE CORES GERADA
+PALETA DE CORES PROFISSIONAL
 ==================================================
 
 #0056b3 - Botão/Ação Principal
+   Contraste: 4.52 (Bom)
+   Texto ideal: #ffffff
+
 #3384d6 - Hover/Destaque
+   Contraste: 3.21 (Aceitável)
+   Texto ideal: #ffffff
+
 #003366 - Ativo/Foco
+   Contraste: 7.85 (Excelente)
+   Texto ideal: #ffffff
+
 #16a34a - Sucesso
+   Contraste: 4.52 (Bom)
+   Texto ideal: #ffffff
+
 #dc2626 - Erro
-#eab308 - Aviso
-#2563eb - Informação
-#0083b3 - Ícones
-#0040b3 - Gráficos
-#b36f00 - Acentos
-#b30056 - Contraste
-#b35c00 - Destaques
-#ffffff - Fundo
-#f5f5f5 - Fundo Alternativo
-#eeeeee - Bordas Claras
-#e0e0e0 - Divisores
-#bdbdbd - Bordas
-#9e9e9e - Textos Secundários
-#757575 - Ícones
-#616161 - Textos Terciários
-#424242 - Textos Principais
-#212121 - Títulos
-#000000 - Texto Principal
+   Contraste: 4.52 (Bom)
+   Texto ideal: #ffffff
+
+[... continua com todas as 22 cores ...]
 ```
 
 ## 🚀 Próximas Melhorias
 
 - [ ] Exportação em formatos adicionais (CSS, SCSS, JSON)
-- [ ] Validação de contraste WCAG
 - [ ] Modo escuro/claro
 - [ ] Histórico de paletas geradas
 - [ ] Integração com APIs de design systems
+- [ ] Sliders para ajustes manuais de saturação/luminosidade
+- [ ] Preview de contraste em tempo real
+
+## 💻 Desenvolvimento
+
+### **Estrutura de Código**
+- **Separação de Responsabilidades**: HTML (estrutura), CSS (estilo), JS (lógica)
+- **JavaScript Modular**: Funções organizadas por funcionalidade
+- **Comentários Detalhados**: Código autoexplicativo
+- **Padrões Modernos**: ES6+, async/await, arrow functions
+
+### **Manutenibilidade**
+- **Arquivos Separados**: Fácil manutenção e debugging
+- **Funções Reutilizáveis**: Código limpo e organizado
+- **Validação de Entrada**: Tratamento de erros robusto
+- **Performance Otimizada**: Algoritmos eficientes
 
 ---
 

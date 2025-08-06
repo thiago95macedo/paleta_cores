@@ -1,0 +1,335 @@
+// Sistema de notificações
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toastNotification');
+  toast.textContent = message;
+  toast.className = `toast-notification ${isError ? 'error' : ''}`;
+  
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+// Copiar cor em múltiplos formatos
+function copyColor(color, format = 'hex') {
+  let textToCopy = color;
+  let message = `Cor ${color} copiada!`;
+  
+  if (format === 'rgb') {
+    const rgb = hexToRgb(color);
+    textToCopy = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    message = `RGB ${textToCopy} copiado!`;
+  } else if (format === 'hsl') {
+    const rgb = hexToRgb(color);
+    const hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+    textToCopy = `hsl(${Math.round(hsl[0])}, ${Math.round(hsl[1])}%, ${Math.round(hsl[2])}%)`;
+    message = `HSL ${textToCopy} copiado!`;
+  }
+  
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast(message);
+  }).catch(() => {
+    showToast('Erro ao copiar cor', true);
+  });
+}
+
+// Calcular contraste WCAG
+function calculateContrast(color1, color2) {
+  const getLuminance = (color) => {
+    const rgb = hexToRgb(color);
+    const [r, g, b] = rgb.map(c => {
+      c = c / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+
+  const l1 = getLuminance(color1);
+  const l2 = getLuminance(color2);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+// Verificar acessibilidade
+function getAccessibilityInfo(color) {
+  const contrastWithWhite = calculateContrast(color, '#ffffff');
+  const contrastWithBlack = calculateContrast(color, '#000000');
+  
+  let bestTextColor = '#000000';
+  let contrast = contrastWithBlack;
+  
+  if (contrastWithWhite > contrastWithBlack) {
+    bestTextColor = '#ffffff';
+    contrast = contrastWithWhite;
+  }
+  
+  let accessibility = 'Baixo';
+  if (contrast >= 7) accessibility = 'Excelente';
+  else if (contrast >= 4.5) accessibility = 'Bom';
+  else if (contrast >= 3) accessibility = 'Aceitável';
+  
+  return { bestTextColor, contrast: contrast.toFixed(2), accessibility };
+}
+
+// Exportar paleta completa
+function exportPalette() {
+  const paletteContainer = document.getElementById('paletteContainer');
+  const colorBoxes = paletteContainer.querySelectorAll('.color-box');
+  
+  let paletteText = 'PALETA DE CORES PROFISSIONAL\n';
+  paletteText += '='.repeat(50) + '\n\n';
+  
+  colorBoxes.forEach(box => {
+    const color = box.textContent;
+    const description = box.nextElementSibling.textContent;
+    const accessibility = getAccessibilityInfo(color);
+    paletteText += `${color} - ${description}\n`;
+    paletteText += `   Contraste: ${accessibility.contrast} (${accessibility.accessibility})\n`;
+    paletteText += `   Texto ideal: ${accessibility.bestTextColor}\n\n`;
+  });
+  
+  // Criar arquivo para download
+  const blob = new Blob([paletteText], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'paleta_cores_profissional.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  showToast('Paleta exportada com sucesso!');
+}
+
+// Conversões de cor
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ] : null;
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+
+  return [h * 360, s * 100, l * 100];
+}
+
+function hslToRgb(h, s, l) {
+  h /= 360;
+  s /= 100;
+  l /= 100;
+
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+
+  let r, g, b;
+
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+
+  return [
+    Math.round(r * 255),
+    Math.round(g * 255),
+    Math.round(b * 255)
+  ];
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + [r, g, b].map(x => {
+    const hex = x.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  }).join("");
+}
+
+// Gerar cor com HSL otimizado
+function generateOptimizedColor(h, s, l) {
+  const rgb = hslToRgb(h, s, l);
+  return rgbToHex(rgb[0], rgb[1], rgb[2]);
+}
+
+// Sistema de cores profissional aprimorado
+function generateProfessionalPalette(primaryColor) {
+  const rgb = hexToRgb(primaryColor);
+  const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+
+  // Cores fixas para feedback (baseadas em Material Design)
+  const feedbackColors = {
+    success: '#16a34a',    // Verde seguro, bem contrastante
+    error: '#dc2626',      // Vermelho vibrante
+    warning: '#eab308',    // Amarelo/laranja para avisos
+    info: '#2563eb'        // Azul informativo
+  };
+
+  // Cores principais otimizadas
+  const primaryColors = {
+    primary: primaryColor,
+    // Claro: aumentar luminosidade E reduzir saturação
+    primaryLight: generateOptimizedColor(h, Math.max(0, s - 20), Math.min(100, l + 25)),
+    // Escuro: reduzir luminosidade, aumentar saturação
+    primaryDark: generateOptimizedColor(h, Math.min(100, s + 10), Math.max(0, l - 30))
+  };
+
+  // Harmônicos suaves e equilibrados (evitando tons terrosos)
+  const harmonicColors = {
+    // Análogos: tons azul-esverdeados suaves
+    analogous1: generateOptimizedColor((h + 20) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
+    analogous2: generateOptimizedColor((h - 20 + 360) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
+    // Triádicos: tons equilibrados, evitando marrom
+    triadic1: generateOptimizedColor((h + 120) % 360, Math.min(100, s + 10), Math.max(0, l - 5)),
+    triadic2: generateOptimizedColor((h + 240) % 360, Math.min(100, s + 10), Math.max(0, l - 5)),
+    // Complementar: otimizado para contraste suave
+    complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 15), Math.max(0, l - 10))
+  };
+
+  // Escala de cinzas profissional (inspirada no Tailwind)
+  const neutralColors = {
+    white: '#ffffff',
+    gray50: '#fafafa',
+    gray100: '#f5f5f5',
+    gray200: '#eeeeee',
+    gray300: '#e0e0e0',
+    gray400: '#bdbdbd',
+    gray500: '#9e9e9e',
+    gray600: '#757575',
+    gray700: '#616161',
+    gray800: '#424242',
+    gray900: '#212121',
+    black: '#000000'
+  };
+
+  return {
+    ...primaryColors,
+    ...feedbackColors,
+    ...harmonicColors,
+    ...neutralColors
+  };
+}
+
+function generatePalette() {
+  const primaryColor = document.getElementById('colorInput').value.trim();
+  if (!primaryColor || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(primaryColor)) {
+    showToast('Por favor, insira uma cor válida no formato hexadecimal', true);
+    return;
+  }
+
+  const palette = generateProfessionalPalette(primaryColor);
+  const paletteContainer = document.getElementById('paletteContainer');
+  paletteContainer.innerHTML = '';
+
+  // 1. CORES PRINCIPAIS
+  addColorBox(paletteContainer, palette.primary, 'Botão/Ação Principal');
+  addColorBox(paletteContainer, palette.primaryLight, 'Hover/Destaque');
+  addColorBox(paletteContainer, palette.primaryDark, 'Ativo/Foco');
+
+  // 2. CORES DE FEEDBACK (fixas e otimizadas)
+  addColorBox(paletteContainer, palette.success, 'Sucesso');
+  addColorBox(paletteContainer, palette.error, 'Erro');
+  addColorBox(paletteContainer, palette.warning, 'Aviso');
+  addColorBox(paletteContainer, palette.info, 'Informação');
+
+  // 3. CORES DE HARMONIA (suaves e equilibradas)
+  addColorBox(paletteContainer, palette.analogous1, 'Ícones');
+  addColorBox(paletteContainer, palette.analogous2, 'Gráficos');
+  addColorBox(paletteContainer, palette.triadic1, 'Acentos');
+  addColorBox(paletteContainer, palette.triadic2, 'Contraste');
+  addColorBox(paletteContainer, palette.complementary, 'Destaques');
+
+  // 4. CORES NEUTRAS (escala profissional)
+  addColorBox(paletteContainer, palette.white, 'Fundo');
+  addColorBox(paletteContainer, palette.gray100, 'Fundo Alternativo');
+  addColorBox(paletteContainer, palette.gray200, 'Bordas Claras');
+  addColorBox(paletteContainer, palette.gray300, 'Divisores');
+  addColorBox(paletteContainer, palette.gray400, 'Bordas');
+  addColorBox(paletteContainer, palette.gray500, 'Textos Secundários');
+  addColorBox(paletteContainer, palette.gray600, 'Ícones');
+  addColorBox(paletteContainer, palette.gray700, 'Textos Terciários');
+  addColorBox(paletteContainer, palette.gray800, 'Textos Principais');
+  addColorBox(paletteContainer, palette.gray900, 'Títulos');
+  addColorBox(paletteContainer, palette.black, 'Texto Principal');
+}
+
+function addColorBox(container, color, description) {
+  const colorItem = document.createElement('div');
+  colorItem.className = 'color-item';
+
+  const colorBox = document.createElement('div');
+  colorBox.className = 'color-box';
+  colorBox.style.backgroundColor = color;
+  colorBox.textContent = color;
+  
+  // Adicionar efeito de clique
+  colorBox.onclick = () => {
+    colorBox.classList.add('clicked');
+    setTimeout(() => colorBox.classList.remove('clicked'), 200);
+    copyColor(color);
+  };
+
+  const desc = document.createElement('span');
+  desc.className = 'description';
+  desc.textContent = description;
+
+  // Informações de acessibilidade
+  const accessibility = getAccessibilityInfo(color);
+  const accessibilityInfo = document.createElement('div');
+  accessibilityInfo.className = 'accessibility-info';
+  accessibilityInfo.innerHTML = `
+    <small>Contraste: ${accessibility.contrast} (${accessibility.accessibility})</small>
+    <div class="format-buttons">
+      <button onclick="copyColor('${color}', 'hex')" class="format-btn">HEX</button>
+      <button onclick="copyColor('${color}', 'rgb')" class="format-btn">RGB</button>
+      <button onclick="copyColor('${color}', 'hsl')" class="format-btn">HSL</button>
+    </div>
+  `;
+
+  colorItem.appendChild(colorBox);
+  colorItem.appendChild(desc);
+  colorItem.appendChild(accessibilityInfo);
+  container.appendChild(colorItem);
+}
+
+// Inicializar quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', function() {
+  generatePalette();
+}); 
