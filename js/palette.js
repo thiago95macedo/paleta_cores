@@ -189,17 +189,21 @@ function generateOptimizedColor(h, s, l) {
   return rgbToHex(rgb[0], rgb[1], rgb[2]);
 }
 
-// Sistema de cores profissional aprimorado
+// Sistema de cores profissional totalmente dinâmico
 function generateProfessionalPalette(primaryColor) {
   const rgb = hexToRgb(primaryColor);
   const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-  // Cores fixas para feedback (baseadas em Material Design)
+  // Cores de feedback dinâmicas (baseadas na cor principal)
   const feedbackColors = {
-    success: '#16a34a',    // Verde seguro, bem contrastante
-    error: '#dc2626',      // Vermelho vibrante
-    warning: '#eab308',    // Amarelo/laranja para avisos
-    info: '#2563eb'        // Azul informativo
+    // Sucesso: verde baseado na luminosidade da cor principal
+    success: generateOptimizedColor(120, Math.min(100, s + 10), Math.max(0, l - 5)),
+    // Erro: vermelho baseado na luminosidade da cor principal
+    error: generateOptimizedColor(0, Math.min(100, s + 10), Math.max(0, l - 5)),
+    // Aviso: laranja baseado na luminosidade da cor principal
+    warning: generateOptimizedColor(30, Math.min(100, s + 10), Math.max(0, l - 5)),
+    // Informação: azul baseado na luminosidade da cor principal
+    info: generateOptimizedColor(210, Math.min(100, s + 10), Math.max(0, l - 5))
   };
 
   // Cores principais otimizadas
@@ -223,19 +227,22 @@ function generateProfessionalPalette(primaryColor) {
     complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 15), Math.max(0, l - 10))
   };
 
-  // Escala de cinzas profissional (inspirada no Tailwind)
+  // Escala de neutros dinâmica (baseada na luminosidade da cor principal)
   const neutralColors = {
+    // Branco sempre branco
     white: '#ffffff',
-    gray50: '#fafafa',
-    gray100: '#f5f5f5',
-    gray200: '#eeeeee',
-    gray300: '#e0e0e0',
-    gray400: '#bdbdbd',
-    gray500: '#9e9e9e',
-    gray600: '#757575',
-    gray700: '#616161',
-    gray800: '#424242',
-    gray900: '#212121',
+    // Cinzas baseados na luminosidade da cor principal
+    gray50: generateOptimizedColor(0, 0, Math.min(100, l + 45)),
+    gray100: generateOptimizedColor(0, 0, Math.min(100, l + 40)),
+    gray200: generateOptimizedColor(0, 0, Math.min(100, l + 35)),
+    gray300: generateOptimizedColor(0, 0, Math.min(100, l + 30)),
+    gray400: generateOptimizedColor(0, 0, Math.min(100, l + 25)),
+    gray500: generateOptimizedColor(0, 0, Math.min(100, l + 20)),
+    gray600: generateOptimizedColor(0, 0, Math.min(100, l + 15)),
+    gray700: generateOptimizedColor(0, 0, Math.min(100, l + 10)),
+    gray800: generateOptimizedColor(0, 0, Math.min(100, l + 5)),
+    gray900: generateOptimizedColor(0, 0, Math.min(100, l)),
+    // Preto sempre preto
     black: '#000000'
   };
 
@@ -332,4 +339,21 @@ function addColorBox(container, color, description) {
 // Inicializar quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function() {
   generatePalette();
+  
+  // Adicionar listener para mudanças em tempo real
+  const colorInput = document.getElementById('colorInput');
+  colorInput.addEventListener('input', function() {
+    // Debounce para evitar muitas chamadas
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      generatePalette();
+    }, 300);
+  });
+  
+  // Também gerar quando pressionar Enter
+  colorInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      generatePalette();
+    }
+  });
 }); 
