@@ -398,6 +398,7 @@ function addColorBox(container, color, description) {
   const colorBox = document.createElement('div');
   colorBox.className = 'color-box';
   colorBox.style.backgroundColor = color;
+  colorBox.style.borderColor = color + '80'; // Borda com 50% de opacidade
   colorBox.textContent = color;
   
   // Adicionar efeito de clique
