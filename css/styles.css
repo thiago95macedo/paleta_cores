@@ -60,10 +60,10 @@ body {
   color: #8c8c8c; /* Textos Secundários */
 }
 
-/* Botões */
-.generate-btn, .export-btn {
-  background-color: #0056b3; /* Botão/Ação Principal */
-  color: #ffffff; /* Texto ideal para fundo azul */
+/* Botão Exportar */
+.export-btn {
+  background-color: #009a00; /* Sucesso */
+  color: #000000; /* Texto ideal para fundo verde */
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
@@ -76,32 +76,17 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.generate-btn:hover, .export-btn:hover {
-  background-color: #4896eb; /* Hover/Destaque */
-  color: #000000; /* Texto ideal para fundo claro */
+.export-btn:hover {
+  background-color: #4a9a00; /* Contraste - verde mais claro */
+  color: #000000;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.generate-btn:active, .export-btn:active {
-  background-color: #000c1a; /* Ativo/Foco */
-  color: #ffffff; /* Texto ideal para fundo escuro */
-  transform: translateY(0);
-}
-
-.export-btn {
-  background-color: #009a00; /* Sucesso */
-  color: #000000; /* Texto ideal para fundo verde */
-}
-
-.export-btn:hover {
-  background-color: #4a9a00; /* Contraste - verde mais claro */
-  color: #000000;
-}
-
 .export-btn:active {
-  background-color: #009a00; /* Sucesso */
-  color: #000000;
+  background-color: #006600; /* Verde mais escuro para ativo */
+  color: #ffffff;
+  transform: translateY(0);
 }
 
 /* Container de cores */
