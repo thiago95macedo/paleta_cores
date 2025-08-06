@@ -42,22 +42,31 @@ body {
   color: #000000; /* Neutro Mais Escuro - Textos principais, títulos, navegação */
 }
 
-.generate-btn {
-  width: 150px;
-  height: 48px;
-  font-size: 16px;
+.generate-btn, .export-btn {
+  background-color: #0056b3;
   color: white;
-  background-color: #0056b3; /* Cor Principal */
   border: none;
+  padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-size: 14px;
   font-weight: 600;
-  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+  height: 48px;
+  min-width: 120px;
 }
 
-.generate-btn:hover {
-  background-color: #006fe6; /* Cor Clara - Estados hover */
+.generate-btn:hover, .export-btn:hover {
+  background-color: #006fe6;
+}
+
+.export-btn {
+  background-color: #16a34a;
+  margin-left: 10px;
+}
+
+.export-btn:hover {
+  background-color: #15803d;
 }
 
 

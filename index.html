@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de Paleta de Cores</title>
+  <title>Gerador de Paleta de Cores Profissional</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body onload="generatePalette()">
   <!-- Logo -->
   <img src="images/logo.svg" alt="Logo Paleta de Cores" class="logo">
 
-  <!-- Campo de Entrada e Botão -->
+  <!-- Campo de Entrada e Botões -->
   <div class="input-container">
     <input type="text" id="colorInput" class="color-input" placeholder="Insira a cor principal (ex: #0056b3)" value="#0056b3">
     <button class="generate-btn" onclick="generatePalette()">Gerar Paleta</button>
+    <button class="export-btn" onclick="exportPalette()">Exportar Paleta</button>
   </div>
 
   <!-- Container de Cores -->
@@ -29,8 +30,8 @@
   <!-- Notificação Toast -->
   <div id="toastNotification" class="toast-notification"></div>
 
-  <!-- Função para Copiar Cor -->
   <script>
+    // Sistema de notificações
     function showToast(message, isError = false) {
       const toast = document.getElementById('toastNotification');
       toast.textContent = message;
@@ -45,6 +46,7 @@
       }, 3000);
     }
 
+    // Copiar cor individual
     function copyColor(color) {
       navigator.clipboard.writeText(color).then(() => {
         showToast(`Cor ${color} copiada!`);
@@ -53,7 +55,44 @@
       });
     }
 
-    // Conversão RGB para HSL
+    // Exportar paleta completa
+    function exportPalette() {
+      const paletteContainer = document.getElementById('paletteContainer');
+      const colorBoxes = paletteContainer.querySelectorAll('.color-box');
+      
+      let paletteText = 'PALETA DE CORES GERADA\n';
+      paletteText += '='.repeat(50) + '\n\n';
+      
+      colorBoxes.forEach(box => {
+        const color = box.textContent;
+        const description = box.nextElementSibling.textContent;
+        paletteText += `${color} - ${description}\n`;
+      });
+      
+      // Criar arquivo para download
+      const blob = new Blob([paletteText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'paleta_cores.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showToast('Paleta exportada com sucesso!');
+    }
+
+    // Conversões de cor
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : null;
+    }
+
     function rgbToHsl(r, g, b) {
       r /= 255;
       g /= 255;
@@ -80,7 +119,6 @@
       return [h * 360, s * 100, l * 100];
     }
 
-    // Conversão HSL para RGB
     function hslToRgb(h, s, l) {
       h /= 360;
       s /= 100;
@@ -114,17 +152,6 @@
       ];
     }
 
-    // Conversão Hex para RGB
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-      ] : null;
-    }
-
-    // Conversão RGB para Hex
     function rgbToHex(r, g, b) {
       return "#" + [r, g, b].map(x => {
         const hex = x.toString(16);
@@ -132,24 +159,48 @@
       }).join("");
     }
 
-    // Gerar cor com HSL modificado
-    function generateHslColor(h, s, l) {
+    // Gerar cor com HSL otimizado
+    function generateOptimizedColor(h, s, l) {
       const rgb = hslToRgb(h, s, l);
       return rgbToHex(rgb[0], rgb[1], rgb[2]);
     }
 
-    // Sistema de cores mais inteligente
-    function generateSmartPalette(primaryColor) {
+    // Sistema de cores profissional
+    function generateProfessionalPalette(primaryColor) {
       const rgb = hexToRgb(primaryColor);
       const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-      const palette = {
-        // CORES PRINCIPAIS (baseadas na cor principal)
+      // Cores fixas para feedback (baseadas em Material Design)
+      const feedbackColors = {
+        success: '#16a34a',    // Verde seguro, bem contrastante
+        error: '#dc2626',      // Vermelho vibrante
+        warning: '#eab308',    // Amarelo/laranja para avisos
+        info: '#2563eb'        // Azul informativo
+      };
+
+      // Cores principais otimizadas
+      const primaryColors = {
         primary: primaryColor,
-        primaryLight: generateHslColor(h, s, Math.min(100, l + 15)),
-        primaryDark: generateHslColor(h, s, Math.max(0, l - 15)),
-        
-        // CORES NEUTRAS (incluindo branco)
+        // Claro: aumentar luminosidade E reduzir saturação
+        primaryLight: generateOptimizedColor(h, Math.max(0, s - 20), Math.min(100, l + 25)),
+        // Escuro: reduzir luminosidade, aumentar saturação
+        primaryDark: generateOptimizedColor(h, Math.min(100, s + 10), Math.max(0, l - 30))
+      };
+
+      // Harmônicos otimizados para acessibilidade
+      const harmonicColors = {
+        // Análogos: ajustar saturação para melhor contraste
+        analogous1: generateOptimizedColor((h - 30 + 360) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
+        analogous2: generateOptimizedColor((h + 30) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
+        // Triádicos: ajustar para usos práticos
+        triadic1: generateOptimizedColor((h + 120) % 360, Math.min(100, s + 15), Math.max(0, l - 10)),
+        triadic2: generateOptimizedColor((h + 240) % 360, Math.min(100, s + 15), Math.max(0, l - 10)),
+        // Complementar: otimizar para contraste
+        complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 20), Math.max(0, l - 15))
+      };
+
+      // Escala de cinzas profissional (inspirada no Tailwind)
+      const neutralColors = {
         white: '#ffffff',
         gray50: '#fafafa',
         gray100: '#f5f5f5',
@@ -161,28 +212,15 @@
         gray700: '#616161',
         gray800: '#424242',
         gray900: '#212121',
-        black: '#000000',
-        
-        // CORES FUNCIONAIS (baseadas na cor principal mas com matizes específicos)
-        success: generateHslColor(120, Math.min(100, s + 10), l), // Verde
-        error: generateHslColor(0, Math.min(100, s + 10), l),     // Vermelho
-        warning: generateHslColor(30, Math.min(100, s + 10), l),  // Laranja
-        info: generateHslColor(210, Math.min(100, s + 10), l),    // Azul
-        
-        // CORES DE HARMONIA
-        analogous1: generateHslColor((h - 30 + 360) % 360, s, l),
-        analogous2: generateHslColor((h + 30) % 360, s, l),
-        triadic1: generateHslColor((h + 120) % 360, s, l),
-        triadic2: generateHslColor((h + 240) % 360, s, l),
-        complementary: generateHslColor((h + 180) % 360, s, l),
-        
-        // VARIAÇÕES DE SATURAÇÃO
-        saturated: generateHslColor(h, Math.min(100, s + 20), l),
-        muted: generateHslColor(h, Math.max(0, s - 20), l),
-        desaturated: generateHslColor(h, Math.max(0, s - 40), l)
+        black: '#000000'
       };
 
-      return palette;
+      return {
+        ...primaryColors,
+        ...feedbackColors,
+        ...harmonicColors,
+        ...neutralColors
+      };
     }
 
     function generatePalette() {
@@ -192,46 +230,40 @@
         return;
       }
 
-      const palette = generateSmartPalette(primaryColor);
+      const palette = generateProfessionalPalette(primaryColor);
       const paletteContainer = document.getElementById('paletteContainer');
       paletteContainer.innerHTML = '';
 
       // 1. CORES PRINCIPAIS
-      addColorBox(paletteContainer, palette.primary, 'Cor Principal - Botões primários, links principais');
-      addColorBox(paletteContainer, palette.primaryLight, 'Cor Clara - Estados hover, destaques suaves');
-      addColorBox(paletteContainer, palette.primaryDark, 'Cor Escura - Textos sobre fundos claros');
+      addColorBox(paletteContainer, palette.primary, 'Botão/Ação Principal');
+      addColorBox(paletteContainer, palette.primaryLight, 'Hover/Destaque');
+      addColorBox(paletteContainer, palette.primaryDark, 'Ativo/Foco');
 
-      // 2. CORES NEUTRAS (incluindo branco)
-      addColorBox(paletteContainer, palette.white, 'Branco - Fundos principais, espaços em branco');
-      addColorBox(paletteContainer, palette.gray50, 'Cinza 50 - Backgrounds muito claros');
-      addColorBox(paletteContainer, palette.gray100, 'Cinza 100 - Backgrounds claros');
-      addColorBox(paletteContainer, palette.gray200, 'Cinza 200 - Bordas claras');
-      addColorBox(paletteContainer, palette.gray300, 'Cinza 300 - Divisórias');
-      addColorBox(paletteContainer, palette.gray400, 'Cinza 400 - Textos secundários');
-      addColorBox(paletteContainer, palette.gray500, 'Cinza 500 - Textos médios');
-      addColorBox(paletteContainer, palette.gray600, 'Cinza 600 - Textos principais');
-      addColorBox(paletteContainer, palette.gray700, 'Cinza 700 - Textos importantes');
-      addColorBox(paletteContainer, palette.gray800, 'Cinza 800 - Alto contraste');
-      addColorBox(paletteContainer, palette.gray900, 'Cinza 900 - Máximo contraste');
-      addColorBox(paletteContainer, palette.black, 'Preto - Textos críticos, títulos');
+      // 2. CORES DE FEEDBACK (fixas e otimizadas)
+      addColorBox(paletteContainer, palette.success, 'Sucesso');
+      addColorBox(paletteContainer, palette.error, 'Erro');
+      addColorBox(paletteContainer, palette.warning, 'Aviso');
+      addColorBox(paletteContainer, palette.info, 'Informação');
 
-      // 3. CORES FUNCIONAIS
-      addColorBox(paletteContainer, palette.success, 'Sucesso - Confirmações, estados positivos');
-      addColorBox(paletteContainer, palette.error, 'Erro - Avisos críticos, validações negativas');
-      addColorBox(paletteContainer, palette.warning, 'Alerta - Notificações importantes');
-      addColorBox(paletteContainer, palette.info, 'Informação - Tooltips, mensagens');
+      // 3. CORES DE HARMONIA (otimizadas para acessibilidade)
+      addColorBox(paletteContainer, palette.analogous1, 'Ícones');
+      addColorBox(paletteContainer, palette.analogous2, 'Gráficos');
+      addColorBox(paletteContainer, palette.triadic1, 'Acentos');
+      addColorBox(paletteContainer, palette.triadic2, 'Contraste');
+      addColorBox(paletteContainer, palette.complementary, 'Destaques');
 
-      // 4. CORES DE HARMONIA
-      addColorBox(paletteContainer, palette.analogous1, 'Análoga 1 - Elementos relacionados');
-      addColorBox(paletteContainer, palette.analogous2, 'Análoga 2 - Elementos complementares');
-      addColorBox(paletteContainer, palette.triadic1, 'Triádica 1 - Acentos, elementos especiais');
-      addColorBox(paletteContainer, palette.triadic2, 'Triádica 2 - Destaques únicos');
-      addColorBox(paletteContainer, palette.complementary, 'Complementar - Contraste máximo');
-
-      // 5. VARIAÇÕES DE SATURAÇÃO
-      addColorBox(paletteContainer, palette.saturated, 'Saturada - Elementos de destaque, CTAs');
-      addColorBox(paletteContainer, palette.muted, 'Suave - Elementos secundários');
-      addColorBox(paletteContainer, palette.desaturated, 'Desaturada - Backgrounds, baixa prioridade');
+      // 4. CORES NEUTRAS (escala profissional)
+      addColorBox(paletteContainer, palette.white, 'Fundo');
+      addColorBox(paletteContainer, palette.gray100, 'Fundo Alternativo');
+      addColorBox(paletteContainer, palette.gray200, 'Bordas Claras');
+      addColorBox(paletteContainer, palette.gray300, 'Divisores');
+      addColorBox(paletteContainer, palette.gray400, 'Bordas');
+      addColorBox(paletteContainer, palette.gray500, 'Textos Secundários');
+      addColorBox(paletteContainer, palette.gray600, 'Ícones');
+      addColorBox(paletteContainer, palette.gray700, 'Textos Terciários');
+      addColorBox(paletteContainer, palette.gray800, 'Textos Principais');
+      addColorBox(paletteContainer, palette.gray900, 'Títulos');
+      addColorBox(paletteContainer, palette.black, 'Texto Principal');
     }
 
     function addColorBox(container, color, description) {
