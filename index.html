@@ -36,12 +36,10 @@
       toast.textContent = message;
       toast.className = `toast-notification ${isError ? 'error' : ''}`;
       
-      // Mostrar a notificação
       setTimeout(() => {
         toast.classList.add('show');
       }, 100);
       
-      // Esconder a notificação após 3 segundos
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
@@ -55,61 +53,222 @@
       });
     }
 
+    // Conversão RGB para HSL
+    function rgbToHsl(r, g, b) {
+      r /= 255;
+      g /= 255;
+      b /= 255;
+
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+
+      return [h * 360, s * 100, l * 100];
+    }
+
+    // Conversão HSL para RGB
+    function hslToRgb(h, s, l) {
+      h /= 360;
+      s /= 100;
+      l /= 100;
+
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+
+      let r, g, b;
+
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+
+      return [
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255)
+      ];
+    }
+
+    // Conversão Hex para RGB
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : null;
+    }
+
+    // Conversão RGB para Hex
+    function rgbToHex(r, g, b) {
+      return "#" + [r, g, b].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      }).join("");
+    }
+
+    // Gerar cor com HSL modificado
+    function generateHslColor(h, s, l) {
+      const rgb = hslToRgb(h, s, l);
+      return rgbToHex(rgb[0], rgb[1], rgb[2]);
+    }
+
+    // Cores análogas (30° de diferença)
+    function getAnalogousColors(h, s, l) {
+      return [
+        generateHslColor((h - 30 + 360) % 360, s, l),
+        generateHslColor((h + 30) % 360, s, l)
+      ];
+    }
+
+    // Cores triádicas (120° de diferença)
+    function getTriadicColors(h, s, l) {
+      return [
+        generateHslColor((h + 120) % 360, s, l),
+        generateHslColor((h + 240) % 360, s, l)
+      ];
+    }
+
+    // Cor complementar (180° de diferença)
+    function getComplementaryColor(h, s, l) {
+      return generateHslColor((h + 180) % 360, s, l);
+    }
+
+    // Variações de luminosidade
+    function getLightnessVariations(h, s, l) {
+      return {
+        lighter: generateHslColor(h, s, Math.min(100, l + 20)),
+        light: generateHslColor(h, s, Math.min(100, l + 10)),
+        dark: generateHslColor(h, s, Math.max(0, l - 10)),
+        darker: generateHslColor(h, s, Math.max(0, l - 20))
+      };
+    }
+
+    // Variações de saturação
+    function getSaturationVariations(h, s, l) {
+      return {
+        saturated: generateHslColor(h, Math.min(100, s + 20), l),
+        muted: generateHslColor(h, Math.max(0, s - 20), l),
+        desaturated: generateHslColor(h, Math.max(0, s - 40), l)
+      };
+    }
+
+    // Cores funcionais adaptativas
+    function getAdaptiveFunctionalColors(h, s, l) {
+      // Sucesso: Verde baseado na cor principal
+      const successH = 120; // Verde
+      const successColor = generateHslColor(successH, Math.min(100, s + 10), l);
+      
+      // Erro: Vermelho baseado na cor principal
+      const errorH = 0; // Vermelho
+      const errorColor = generateHslColor(errorH, Math.min(100, s + 10), l);
+      
+      // Alerta: Laranja baseado na cor principal
+      const warningH = 30; // Laranja
+      const warningColor = generateHslColor(warningH, Math.min(100, s + 10), l);
+      
+      // Info: Azul baseado na cor principal
+      const infoH = 210; // Azul
+      const infoColor = generateHslColor(infoH, Math.min(100, s + 10), l);
+
+      return { successColor, errorColor, warningColor, infoColor };
+    }
+
+    // Cores neutras adaptativas
+    function getAdaptiveNeutralColors(l) {
+      return {
+        lightest: generateHslColor(0, 0, Math.min(100, l + 40)),
+        light: generateHslColor(0, 0, Math.min(100, l + 20)),
+        medium: generateHslColor(0, 0, l),
+        dark: generateHslColor(0, 0, Math.max(0, l - 20)),
+        darkest: generateHslColor(0, 0, Math.max(0, l - 40))
+      };
+    }
+
     function generatePalette() {
-      // Obter a cor principal inserida pelo usuário
       const primaryColor = document.getElementById('colorInput').value.trim();
       if (!primaryColor || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(primaryColor)) {
-        alert('Por favor, insira uma cor válida no formato hexadecimal (ex: #0056b3).');
+        showToast('Por favor, insira uma cor válida no formato hexadecimal', true);
         return;
       }
 
-      // Gerar variações de cores
-      const lightColor = lightenColor(primaryColor, 0.3); // Azul claro
-      const darkColor = darkenColor(primaryColor, 0.3);   // Azul escuro
-      const intermediateColor = lightenColor(primaryColor, 0.15); // Cor intermediária
-      const complementaryColor = getComplementaryColor(primaryColor); // Cor complementar
-      const successColor = '#28A745'; // Verde - Sucesso
-      const errorColor = '#DC3545';   // Vermelho - Erro
-      const warningColor = '#FFA500'; // Laranja - Alerta
-      const neutralColors = ['#F8F9FA', '#E9ECEF', '#343A40', '#212529']; // Cores neutras
-      const accentColor = '#FFC107';  // Amarelo - Destaque
-      const decorativeColor = '#6F42C1'; // Roxo - Decorativo
-      const mutedColor = getMutedColor(primaryColor); // Cor desaturada
+      // Converter para HSL
+      const rgb = hexToRgb(primaryColor);
+      const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-      // Limpar o container antes de gerar a nova paleta
+      // Gerar todas as variações
+      const lightnessVars = getLightnessVariations(h, s, l);
+      const saturationVars = getSaturationVariations(h, s, l);
+      const analogousColors = getAnalogousColors(h, s, l);
+      const triadicColors = getTriadicColors(h, s, l);
+      const complementaryColor = getComplementaryColor(h, s, l);
+      const functionalColors = getAdaptiveFunctionalColors(h, s, l);
+      const neutralColors = getAdaptiveNeutralColors(l);
+
+      // Limpar container
       const paletteContainer = document.getElementById('paletteContainer');
       paletteContainer.innerHTML = '';
 
-      // Adicionar a cor principal
-      addColorBox(paletteContainer, primaryColor, 'Azul Principal - Cor predominante do sistema, usada em botões principais e links.');
+      // 1. COR PRINCIPAL E VARIAÇÕES
+      addColorBox(paletteContainer, primaryColor, 'Cor Principal - Botões primários, links principais, elementos de destaque');
+      addColorBox(paletteContainer, lightnessVars.light, 'Cor Clara - Estados hover, destaques suaves, backgrounds sutis');
+      addColorBox(paletteContainer, lightnessVars.lighter, 'Cor Mais Clara - Backgrounds muito claros, espaços negativos');
+      addColorBox(paletteContainer, lightnessVars.dark, 'Cor Escura - Textos sobre fundos claros, elementos interativos');
+      addColorBox(paletteContainer, lightnessVars.darker, 'Cor Mais Escura - Textos importantes, alto contraste');
 
-      // Adicionar variações de azul
-      addColorBox(paletteContainer, lightColor, 'Azul Claro - Usado para hover states e destaques suaves.');
-      addColorBox(paletteContainer, intermediateColor, 'Azul Intermediário - Para elementos secundários ou transições suaves.');
-      addColorBox(paletteContainer, darkColor, 'Azul Escuro - Para textos sobre fundos claros ou elementos interativos.');
+      // 2. VARIAÇÕES DE SATURAÇÃO
+      addColorBox(paletteContainer, saturationVars.saturated, 'Cor Saturada - Elementos de destaque, CTAs, badges');
+      addColorBox(paletteContainer, saturationVars.muted, 'Cor Suave - Elementos secundários, bordas, divisórias');
+      addColorBox(paletteContainer, saturationVars.desaturated, 'Cor Desaturada - Backgrounds, elementos de baixa prioridade');
 
-      // Adicionar cor complementar
-      addColorBox(paletteContainer, complementaryColor, 'Cor Complementar - Contraste visual.');
+      // 3. CORES ANÁLOGAS
+      addColorBox(paletteContainer, analogousColors[0], 'Cor Análoga 1 - Elementos relacionados, navegação secundária');
+      addColorBox(paletteContainer, analogousColors[1], 'Cor Análoga 2 - Elementos complementares, destaques alternativos');
 
-      // Adicionar cores funcionais
-      addColorBox(paletteContainer, successColor, 'Verde - Indica sucesso, confirmações ou estados positivos.');
-      addColorBox(paletteContainer, errorColor, 'Vermelho - Usado para erros, avisos ou ações críticas.');
-      addColorBox(paletteContainer, warningColor, 'Laranja - Cor complementar para alertas ou notificações.');
+      // 4. CORES TRIÁDICAS
+      addColorBox(paletteContainer, triadicColors[0], 'Cor Triádica 1 - Acentos, elementos especiais, CTAs secundários');
+      addColorBox(paletteContainer, triadicColors[1], 'Cor Triádica 2 - Destaques, elementos únicos, alertas especiais');
 
-      // Adicionar cores neutras
-      neutralColors.forEach((color, index) => {
-        let description = '';
-        if (index === 0) description = 'Cinza Claro - Fundo geral ou áreas de baixa prioridade.';
-        else if (index === 1) description = 'Cinza Médio - Divisórias, bordas ou fundos de cards.';
-        else if (index === 2) description = 'Cinza Escuro - Textos principais ou elementos de navegação.';
-        else if (index === 3) description = 'Preto - Textos importantes ou alto contraste.';
-        addColorBox(paletteContainer, color, description);
-      });
+      // 5. COR COMPLEMENTAR
+      addColorBox(paletteContainer, complementaryColor, 'Cor Complementar - Contraste máximo, elementos críticos, CTAs de emergência');
 
-      // Adicionar cores adicionais
-      addColorBox(paletteContainer, accentColor, 'Amarelo - Acentos para chamar atenção em badges ou ícones.');
-      addColorBox(paletteContainer, decorativeColor, 'Roxo - Elementos decorativos ou menos frequentes.');
-      addColorBox(paletteContainer, mutedColor, 'Cor Desaturada - Para elementos secundários ou de fundo.');
+      // 6. CORES FUNCIONAIS ADAPTATIVAS
+      addColorBox(paletteContainer, functionalColors.successColor, 'Sucesso - Confirmações, estados positivos, validações');
+      addColorBox(paletteContainer, functionalColors.errorColor, 'Erro - Avisos críticos, validações negativas, alertas');
+      addColorBox(paletteContainer, functionalColors.warningColor, 'Alerta - Notificações importantes, avisos preventivos');
+      addColorBox(paletteContainer, functionalColors.infoColor, 'Informação - Tooltips, mensagens informativas, ajuda');
+
+      // 7. CORES NEUTRAS ADAPTATIVAS
+      addColorBox(paletteContainer, neutralColors.lightest, 'Neutro Mais Claro - Background principal, espaços em branco');
+      addColorBox(paletteContainer, neutralColors.light, 'Neutro Claro - Backgrounds secundários, cards, containers');
+      addColorBox(paletteContainer, neutralColors.medium, 'Neutro Médio - Bordas, divisórias, elementos estruturais');
+      addColorBox(paletteContainer, neutralColors.dark, 'Neutro Escuro - Textos secundários, labels, metadados');
+      addColorBox(paletteContainer, neutralColors.darkest, 'Neutro Mais Escuro - Textos principais, títulos, navegação');
     }
 
     function addColorBox(container, color, description) {
@@ -119,7 +278,7 @@
       const colorBox = document.createElement('div');
       colorBox.className = 'color-box';
       colorBox.style.backgroundColor = color;
-      colorBox.textContent = color; // Código da cor dentro do retângulo
+      colorBox.textContent = color;
       colorBox.onclick = () => copyColor(color);
 
       const desc = document.createElement('span');
@@ -129,58 +288,6 @@
       colorItem.appendChild(colorBox);
       colorItem.appendChild(desc);
       container.appendChild(colorItem);
-    }
-
-    function lightenColor(color, amount) {
-      const hex = color.replace('#', '');
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-
-      const newR = Math.min(255, Math.round(r + (255 - r) * amount)).toString(16).padStart(2, '0');
-      const newG = Math.min(255, Math.round(g + (255 - g) * amount)).toString(16).padStart(2, '0');
-      const newB = Math.min(255, Math.round(b + (255 - b) * amount)).toString(16).padStart(2, '0');
-
-      return `#${newR}${newG}${newB}`;
-    }
-
-    function darkenColor(color, amount) {
-      const hex = color.replace('#', '');
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-
-      const newR = Math.max(0, Math.round(r * (1 - amount))).toString(16).padStart(2, '0');
-      const newG = Math.max(0, Math.round(g * (1 - amount))).toString(16).padStart(2, '0');
-      const newB = Math.max(0, Math.round(b * (1 - amount))).toString(16).padStart(2, '0');
-
-      return `#${newR}${newG}${newB}`;
-    }
-
-    function getComplementaryColor(color) {
-      const hex = color.replace('#', '');
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-
-      const compR = (255 - r).toString(16).padStart(2, '0');
-      const compG = (255 - g).toString(16).padStart(2, '0');
-      const compB = (255 - b).toString(16).padStart(2, '0');
-
-      return `#${compR}${compG}${compB}`;
-    }
-
-    function getMutedColor(color) {
-      const hex = color.replace('#', '');
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-
-      const newR = Math.min(255, Math.round(r * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
-      const newG = Math.min(255, Math.round(g * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
-      const newB = Math.min(255, Math.round(b * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
-
-      return `#${newR}${newG}${newB}`;
     }
   </script>
 </body>
