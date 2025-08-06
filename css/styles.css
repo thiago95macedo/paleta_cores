@@ -28,7 +28,7 @@ body {
 }
 
 .color-input {
-  width: 120px;
+  width: 150px;
   height: 48px;
   padding: 8px 12px;
   font-size: 16px;
@@ -37,10 +37,12 @@ body {
   text-transform: uppercase;
   text-align: center;
   max-width: 90vw;
+  box-sizing: border-box;
 }
 
 .generate-btn {
-  padding: 12px 24px;
+  width: 150px;
+  height: 48px;
   font-size: 16px;
   color: white;
   background-color: #0056b3;
@@ -49,7 +51,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  min-width: 150px;
+  box-sizing: border-box;
 }
 
 .generate-btn:hover {
@@ -176,15 +178,15 @@ footer a:hover {
   }
   
   .color-input {
-    width: 100px;
+    width: 120px;
     height: 48px;
     font-size: 15px;
   }
   
   .generate-btn {
-    padding: 14px 28px;
+    width: 120px;
+    height: 48px;
     font-size: 15px;
-    min-width: 140px;
   }
   
   .container {
@@ -227,15 +229,15 @@ footer a:hover {
   }
   
   .color-input {
-    width: 90px;
+    width: 100px;
     height: 48px;
     font-size: 14px;
   }
   
   .generate-btn {
-    padding: 12px 24px;
+    width: 100px;
+    height: 48px;
     font-size: 14px;
-    min-width: 130px;
   }
   
   .container {
@@ -269,15 +271,15 @@ footer a:hover {
   }
   
   .color-input {
-    width: 80px;
+    width: 90px;
     height: 48px;
     font-size: 13px;
   }
   
   .generate-btn {
-    padding: 10px 20px;
+    width: 90px;
+    height: 48px;
     font-size: 13px;
-    min-width: 120px;
   }
   
   .toast-notification {
