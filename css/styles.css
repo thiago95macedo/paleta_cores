@@ -89,32 +89,76 @@ body {
 
 .color-box {
   width: 100%;
-  height: 120px;
-  margin: 0 auto;
+  height: 80px;
+  border: 2px solid #5a5a5a;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
-  text-align: center;
-  line-height: 120px;
-  font-size: 14px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 600;
-  border: 2px solid #5a5a5a; /* Neutro Médio - Bordas, divisórias, elementos estruturais */
+  position: relative;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .color-box:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.color-box.clicked {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .description {
+  margin-top: 8px;
   font-size: 14px;
-  font-weight: bold;
-  color: #262626; /* Neutro Escuro - Textos secundários, labels, metadados */
-  margin-top: 12px;
+  color: #262626;
   text-align: center;
-  line-height: 1.4;
-  padding: 0 10px;
+  font-weight: 500;
+}
+
+.accessibility-info {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.accessibility-info small {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.format-buttons {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.format-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.format-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #bbb;
+}
+
+.format-btn:active {
+  transform: scale(0.95);
 }
 
 footer {
