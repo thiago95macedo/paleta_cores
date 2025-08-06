@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Paleta de Cores</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #F8F9FA; /* Cinza Claro */
+      color: #343A40; /* Cinza Escuro */
+      text-align: center;
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
+      color: #343A40; /* Cinza Escuro */
+    }
+    .logo {
+      width: 250px;
+      height: auto;
+      margin-bottom: 30px;
+    }
+    .input-container {
+      margin-bottom: 30px;
+    }
+    .color-input {
+      width: 150px;
+      height: 30px;
+      padding: 5px;
+      font-size: 16px;
+      border: 2px solid #0056b3;
+      border-radius: 5px;
+      text-transform: uppercase;
+    }
+    .generate-btn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #0056b3;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .generate-btn:hover {
+      background-color: #003C7D;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .color-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .color-box {
+      width: 100%;
+      height: 100px;
+      margin: 0 auto;
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      font-size: 14px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .color-box:hover {
+      transform: scale(1.05);
+    }
+    .description {
+      font-size: 14px;
+      font-weight: bold;
+      color: #343A40; /* Cinza Escuro */
+      margin-top: 10px;
+      text-align: center;
+    }
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+    }
+    footer a {
+      color: #0056b3;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body onload="generatePalette()">
+  <!-- Logo -->
+  <img src="logotipo_weth.png" alt="Logo WETH" class="logo">
+
+  <!-- Título -->
+  <h2>Gerador de Paleta de Cores <br> Designer Web <br><br> </h2>
+
+  <!-- Campo de Entrada e Botão -->
+  <div class="input-container">
+    <input type="text" id="colorInput" class="color-input" placeholder="Insira a cor principal (ex: #0056b3)" value="#0056b3">
+    <button class="generate-btn" onclick="generatePalette()">Gerar Paleta</button>
+  </div>
+
+  <!-- Container de Cores -->
+  <div class="container" id="paletteContainer">
+    <!-- A paleta será gerada aqui dinamicamente -->
+  </div>
+
+  <!-- Rodapé -->
+ <footer class="container">
+   <div class="row align-center">
+       <div class="column align-center">
+           <p>
+               &copy; 2025 <a href="https://thiagomacedo.com.br"><b>Thiago Macêdo</b></a>
+           </p>
+       </div>
+   </div>
+ </footer>
+
+  <!-- Função para Copiar Cor -->
+  <script>
+    function copyColor(color) {
+      navigator.clipboard.writeText(color).then(() => {
+        alert(`Código da cor ${color} copiado para a área de transferência!`);
+      });
+    }
+
+    function generatePalette() {
+      // Obter a cor principal inserida pelo usuário
+      const primaryColor = document.getElementById('colorInput').value.trim();
+      if (!primaryColor || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(primaryColor)) {
+        alert('Por favor, insira uma cor válida no formato hexadecimal (ex: #0056b3).');
+        return;
+      }
+
+      // Gerar variações de cores
+      const lightColor = lightenColor(primaryColor, 0.3); // Azul claro
+      const darkColor = darkenColor(primaryColor, 0.3);   // Azul escuro
+      const intermediateColor = lightenColor(primaryColor, 0.15); // Cor intermediária
+      const complementaryColor = getComplementaryColor(primaryColor); // Cor complementar
+      const successColor = '#28A745'; // Verde - Sucesso
+      const errorColor = '#DC3545';   // Vermelho - Erro
+      const warningColor = '#FFA500'; // Laranja - Alerta
+      const neutralColors = ['#F8F9FA', '#E9ECEF', '#343A40', '#212529']; // Cores neutras
+      const accentColor = '#FFC107';  // Amarelo - Destaque
+      const decorativeColor = '#6F42C1'; // Roxo - Decorativo
+      const mutedColor = getMutedColor(primaryColor); // Cor desaturada
+
+      // Limpar o container antes de gerar a nova paleta
+      const paletteContainer = document.getElementById('paletteContainer');
+      paletteContainer.innerHTML = '';
+
+      // Adicionar a cor principal
+      addColorBox(paletteContainer, primaryColor, 'Azul Principal - Cor predominante do sistema, usada em botões principais e links.');
+
+      // Adicionar variações de azul
+      addColorBox(paletteContainer, lightColor, 'Azul Claro - Usado para hover states e destaques suaves.');
+      addColorBox(paletteContainer, intermediateColor, 'Azul Intermediário - Para elementos secundários ou transições suaves.');
+      addColorBox(paletteContainer, darkColor, 'Azul Escuro - Para textos sobre fundos claros ou elementos interativos.');
+
+      // Adicionar cor complementar
+      addColorBox(paletteContainer, complementaryColor, 'Cor Complementar - Contraste visual.');
+
+      // Adicionar cores funcionais
+      addColorBox(paletteContainer, successColor, 'Verde - Indica sucesso, confirmações ou estados positivos.');
+      addColorBox(paletteContainer, errorColor, 'Vermelho - Usado para erros, avisos ou ações críticas.');
+      addColorBox(paletteContainer, warningColor, 'Laranja - Cor complementar para alertas ou notificações.');
+
+      // Adicionar cores neutras
+      neutralColors.forEach((color, index) => {
+        let description = '';
+        if (index === 0) description = 'Cinza Claro - Fundo geral ou áreas de baixa prioridade.';
+        else if (index === 1) description = 'Cinza Médio - Divisórias, bordas ou fundos de cards.';
+        else if (index === 2) description = 'Cinza Escuro - Textos principais ou elementos de navegação.';
+        else if (index === 3) description = 'Preto - Textos importantes ou alto contraste.';
+        addColorBox(paletteContainer, color, description);
+      });
+
+      // Adicionar cores adicionais
+      addColorBox(paletteContainer, accentColor, 'Amarelo - Acentos para chamar atenção em badges ou ícones.');
+      addColorBox(paletteContainer, decorativeColor, 'Roxo - Elementos decorativos ou menos frequentes.');
+      addColorBox(paletteContainer, mutedColor, 'Cor Desaturada - Para elementos secundários ou de fundo.');
+    }
+
+    function addColorBox(container, color, description) {
+      const colorItem = document.createElement('div');
+      colorItem.className = 'color-item';
+
+      const colorBox = document.createElement('div');
+      colorBox.className = 'color-box';
+      colorBox.style.backgroundColor = color;
+      colorBox.textContent = color; // Código da cor dentro do retângulo
+      colorBox.onclick = () => copyColor(color);
+
+      const desc = document.createElement('span');
+      desc.className = 'description';
+      desc.textContent = description;
+
+      colorItem.appendChild(colorBox);
+      colorItem.appendChild(desc);
+      container.appendChild(colorItem);
+    }
+
+    function lightenColor(color, amount) {
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      const newR = Math.min(255, Math.round(r + (255 - r) * amount)).toString(16).padStart(2, '0');
+      const newG = Math.min(255, Math.round(g + (255 - g) * amount)).toString(16).padStart(2, '0');
+      const newB = Math.min(255, Math.round(b + (255 - b) * amount)).toString(16).padStart(2, '0');
+
+      return `#${newR}${newG}${newB}`;
+    }
+
+    function darkenColor(color, amount) {
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      const newR = Math.max(0, Math.round(r * (1 - amount))).toString(16).padStart(2, '0');
+      const newG = Math.max(0, Math.round(g * (1 - amount))).toString(16).padStart(2, '0');
+      const newB = Math.max(0, Math.round(b * (1 - amount))).toString(16).padStart(2, '0');
+
+      return `#${newR}${newG}${newB}`;
+    }
+
+    function getComplementaryColor(color) {
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      const compR = (255 - r).toString(16).padStart(2, '0');
+      const compG = (255 - g).toString(16).padStart(2, '0');
+      const compB = (255 - b).toString(16).padStart(2, '0');
+
+      return `#${compR}${compG}${compB}`;
+    }
+
+    function getMutedColor(color) {
+      const hex = color.replace('#', '');
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+
+      const newR = Math.min(255, Math.round(r * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
+      const newG = Math.min(255, Math.round(g * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
+      const newB = Math.min(255, Math.round(b * 0.5 + 128 * 0.5)).toString(16).padStart(2, '0');
+
+      return `#${newR}${newG}${newB}`;
+    }
+  </script>
+</body>
+</html>
