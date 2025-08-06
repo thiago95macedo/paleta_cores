@@ -12,7 +12,7 @@ body {
 
 
 .logo {
-  width: 450px;
+  width: 500px;
   height: auto;
   margin-bottom: 30px;
   max-width: 90vw;
@@ -168,7 +168,7 @@ footer a:hover {
   }
   
   .logo {
-    width: 350px;
+    width: 400px;
     margin-bottom: 25px;
   }
   
@@ -219,7 +219,7 @@ footer a:hover {
   }
   
   .logo {
-    width: 280px;
+    width: 320px;
     margin-bottom: 20px;
   }
   
@@ -267,7 +267,7 @@ footer a:hover {
 
 @media (max-width: 360px) {
   .logo {
-    width: 240px;
+    width: 280px;
   }
   
   .color-input {
