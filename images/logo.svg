@@ -5,9 +5,9 @@
   <line x1="20" y1="35" x2="180" y2="35" stroke="#f0f0f0" stroke-width="1" opacity="0.5"/>
   
   <!-- Círculos da paleta com tamanhos uniformes e espaçamento equilibrado -->
-  <circle cx="35" cy="35" r="8" fill="#0056b3" opacity="0.9"/>
-  <circle cx="55" cy="35" r="8" fill="#5a9ee7" opacity="0.9"/>
-  <circle cx="75" cy="35" r="8" fill="#001124" opacity="0.9"/>
+  <circle cx="35" cy="35" r="8" fill="#4a9208" opacity="0.9"/>
+  <circle cx="55" cy="35" r="8" fill="#6bbf1a" opacity="0.9"/>
+  <circle cx="75" cy="35" r="8" fill="#2d5a05" opacity="0.9"/>
   <circle cx="95" cy="35" r="8" fill="#16a34a" opacity="0.9"/>
   <circle cx="115" cy="35" r="8" fill="#dc2626" opacity="0.9"/>
   <circle cx="135" cy="35" r="8" fill="#eab308" opacity="0.9"/>
@@ -31,8 +31,8 @@
   </text>
   
   <!-- Elemento decorativo - ponto central -->
-  <circle cx="100" cy="35" r="2" fill="#0056b3" opacity="0.7"/>
+  <circle cx="100" cy="35" r="2" fill="#4a9208" opacity="0.7"/>
   
   <!-- Linhas decorativas finas -->
-  <line x1="100" y1="25" x2="100" y2="45" stroke="#0056b3" stroke-width="0.5" opacity="0.3"/>
+  <line x1="100" y1="25" x2="100" y2="45" stroke="#4a9208" stroke-width="0.5" opacity="0.3"/>
 </svg> 
