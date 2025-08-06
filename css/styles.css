@@ -2,8 +2,8 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 20px;
-  background-color: #c0c0c0; /* Neutro Mais Claro - Background principal */
-  color: #262626; /* Neutro Escuro - Textos secundários */
+  background-color: #c0c0c0; /* Neutro Mais Claro - Background principal, espaços em branco */
+  color: #000000; /* Neutro Mais Escuro - Textos principais, títulos, navegação */
   text-align: center;
   min-height: 100vh;
   box-sizing: border-box;
@@ -32,14 +32,14 @@ body {
   height: 48px;
   padding: 8px 12px;
   font-size: 16px;
-  border: 2px solid #0056b3; /* Cor Principal */
+  border: 2px solid #5a5a5a; /* Neutro Médio - Bordas, divisórias, elementos estruturais */
   border-radius: 8px;
   text-transform: uppercase;
   text-align: center;
   max-width: 90vw;
   box-sizing: border-box;
-  background-color: #c0c0c0; /* Neutro Mais Claro */
-  color: #262626; /* Neutro Escuro */
+  background-color: #8c8c8c; /* Neutro Claro - Backgrounds secundários, cards, containers */
+  color: #000000; /* Neutro Mais Escuro - Textos principais, títulos, navegação */
 }
 
 .generate-btn {
@@ -91,7 +91,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  border: 2px solid #8c8c8c; /* Neutro Claro - Bordas */
+  border: 2px solid #5a5a5a; /* Neutro Médio - Bordas, divisórias, elementos estruturais */
 }
 
 .color-box:hover {
@@ -101,7 +101,7 @@ body {
 .description {
   font-size: 14px;
   font-weight: bold;
-  color: #262626; /* Neutro Escuro - Textos secundários */
+  color: #262626; /* Neutro Escuro - Textos secundários, labels, metadados */
   margin-top: 12px;
   text-align: center;
   line-height: 1.4;
