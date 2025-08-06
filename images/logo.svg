@@ -1,18 +1,53 @@
 <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
-  <!-- Círculos de cores representando a paleta atual -->
-  <circle cx="25" cy="40" r="12" fill="#0056b3" opacity="0.9"/> <!-- Cor Principal -->
-  <circle cx="45" cy="40" r="12" fill="#00afb3" opacity="0.9"/> <!-- Cor Análoga 1 -->
-  <circle cx="65" cy="40" r="12" fill="#b30056" opacity="0.9"/> <!-- Cor Triádica 1 -->
-  <circle cx="85" cy="40" r="12" fill="#b35d00" opacity="0.9"/> <!-- Cor Complementar -->
+  <!-- Fundo do logo -->
+  <rect width="200" height="80" fill="#ffffff" rx="12"/>
   
-  <!-- Linha conectando os círculos -->
-  <line x1="37" y1="40" x2="73" y2="40" stroke="#0056b3" stroke-width="2" opacity="0.3"/>
+  <!-- Círculos representando a paleta de cores -->
   
-  <!-- Texto -->
-  <text x="110" y="35" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0056b3">
-    Paleta
+  <!-- Círculo Principal (azul) -->
+  <circle cx="30" cy="25" r="12" fill="#0056b3"/>
+  
+  <!-- Círculo Hover (azul claro) -->
+  <circle cx="55" cy="25" r="10" fill="#5a9ee7"/>
+  
+  <!-- Círculo Ativo (azul escuro) -->
+  <circle cx="80" cy="25" r="8" fill="#001124"/>
+  
+  <!-- Círculo Sucesso (verde) -->
+  <circle cx="105" cy="25" r="10" fill="#16a34a"/>
+  
+  <!-- Círculo Erro (vermelho) -->
+  <circle cx="130" cy="25" r="10" fill="#dc2626"/>
+  
+  <!-- Círculo Aviso (amarelo/laranja) -->
+  <circle cx="155" cy="25" r="10" fill="#eab308"/>
+  
+  <!-- Círculo Informação (azul info) -->
+  <circle cx="180" cy="25" r="10" fill="#3b82f6"/>
+  
+  <!-- Linha de conexão entre os círculos -->
+  <path d="M 30 25 Q 42.5 25 55 25 Q 67.5 25 80 25 Q 92.5 25 105 25 Q 117.5 25 130 25 Q 142.5 25 155 25 Q 167.5 25 180 25" 
+        stroke="#dee0e3" stroke-width="2" fill="none" stroke-dasharray="3,3"/>
+  
+  <!-- Texto "PALETA" -->
+  <text x="100" y="55" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#3d4248">
+    PALETA
   </text>
-  <text x="110" y="50" font-family="Arial, sans-serif" font-size="14" fill="#262626">
-    de Cores
+  
+  <!-- Texto "CORES" -->
+  <text x="100" y="70" font-family="Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#596169">
+    CORES
   </text>
+  
+  <!-- Elemento decorativo - gradiente sutil -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0056b3;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#16a34a;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Barra decorativa com gradiente -->
+  <rect x="20" y="75" width="160" height="3" fill="url(#logoGradient)" rx="1.5"/>
 </svg> 
