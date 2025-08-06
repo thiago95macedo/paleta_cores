@@ -21,13 +21,14 @@ body {
 .input-container {
   margin-bottom: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 15px;
 }
 
 .color-input {
-  width: 200px;
+  width: 120px;
   height: 40px;
   padding: 8px 12px;
   font-size: 16px;
@@ -175,7 +176,7 @@ footer a:hover {
   }
   
   .color-input {
-    width: 180px;
+    width: 100px;
     height: 45px;
     font-size: 15px;
   }
@@ -226,7 +227,7 @@ footer a:hover {
   }
   
   .color-input {
-    width: 160px;
+    width: 90px;
     height: 42px;
     font-size: 14px;
   }
@@ -268,7 +269,7 @@ footer a:hover {
   }
   
   .color-input {
-    width: 140px;
+    width: 80px;
     height: 40px;
     font-size: 13px;
   }
