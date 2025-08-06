@@ -10,7 +10,7 @@ body {
 
 
 .logo {
-  width: 350px;
+  width: 450px;
   height: auto;
   margin-bottom: 30px;
 }
@@ -113,6 +113,6 @@ footer a:hover {
   }
   
   .logo {
-    width: 280px;
+    width: 350px;
   }
 } 
