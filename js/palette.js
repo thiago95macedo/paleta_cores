@@ -390,6 +390,10 @@ function generatePalette() {
 function addColorBox(container, color, description) {
   const colorItem = document.createElement('div');
   colorItem.className = 'color-item';
+  
+  // Aplicar a cor como background do card com transparência
+  colorItem.style.backgroundColor = color + '15'; // Adiciona 15% de opacidade (hex)
+  colorItem.style.borderColor = color + '30'; // Borda com 30% de opacidade
 
   const colorBox = document.createElement('div');
   colorBox.className = 'color-box';

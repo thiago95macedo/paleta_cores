@@ -101,12 +101,13 @@ body {
 
 /* Cards de cores */
 .color-item {
-  background-color: #c0c0c0; /* Fundo Alternativo */
+  background-color: #c0c0c0; /* Fundo padrão (será sobrescrito pelo JS) */
   border-radius: 12px;
   padding: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid #b3b3b3; /* Bordas Claras */
+  border: 1px solid #b3b3b3; /* Borda padrão (será sobrescrita pelo JS) */
+  backdrop-filter: blur(10px);
 }
 
 .color-item:hover {
@@ -147,9 +148,10 @@ body {
 .description {
   margin-top: 8px;
   font-size: 14px;
-  color: #666666; /* Textos Principais */
+  color: #333333; /* Texto mais escuro para melhor contraste */
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .accessibility-info {
@@ -159,9 +161,11 @@ body {
 
 .accessibility-info small {
   display: block;
-  color: #8c8c8c; /* Textos Secundários */
+  color: #444444; /* Texto mais escuro para melhor contraste */
   font-size: 12px;
   margin-bottom: 6px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .format-buttons {
@@ -172,25 +176,30 @@ body {
 }
 
 .format-btn {
-  background-color: #a6a6a6; /* Divisores */
-  border: 1px solid #999999; /* Bordas */
+  background-color: rgba(0, 86, 179, 0.9); /* Botão com transparência */
+  border: 1px solid rgba(0, 86, 179, 0.7);
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 11px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #000000; /* Texto ideal para fundo cinza */
+  color: #ffffff; /* Texto branco */
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
 }
 
 .format-btn:hover {
-  background-color: #b3b3b3; /* Bordas Claras */
-  border-color: #0056b3; /* Botão/Ação Principal */
-  color: #000000;
+  background-color: rgba(0, 86, 179, 1); /* Opacidade total no hover */
+  border-color: rgba(0, 86, 179, 1);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .format-btn:active {
   transform: scale(0.95);
-  background-color: #999999; /* Bordas */
+  background-color: rgba(0, 17, 36, 0.9); /* Cor escura para ativo */
 }
 
 /* Notificação Toast */
