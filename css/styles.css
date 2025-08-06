@@ -29,7 +29,7 @@ body {
 
 .color-input {
   width: 120px;
-  height: 40px;
+  height: 48px;
   padding: 8px 12px;
   font-size: 16px;
   border: 2px solid #0056b3;
@@ -177,7 +177,7 @@ footer a:hover {
   
   .color-input {
     width: 100px;
-    height: 45px;
+    height: 48px;
     font-size: 15px;
   }
   
@@ -228,7 +228,7 @@ footer a:hover {
   
   .color-input {
     width: 90px;
-    height: 42px;
+    height: 48px;
     font-size: 14px;
   }
   
@@ -270,7 +270,7 @@ footer a:hover {
   
   .color-input {
     width: 80px;
-    height: 40px;
+    height: 48px;
     font-size: 13px;
   }
   
