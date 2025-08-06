@@ -62,8 +62,8 @@ body {
 
 /* Botão Exportar */
 .export-btn {
-  background-color: #009a00; /* Sucesso */
-  color: #000000; /* Texto ideal para fundo verde */
+  background-color: #0056b3; /* Ações primárias, botões principais */
+  color: #ffffff; /* Texto branco para máximo contraste */
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
@@ -77,15 +77,15 @@ body {
 }
 
 .export-btn:hover {
-  background-color: #4a9a00; /* Contraste - verde mais claro */
-  color: #000000;
+  background-color: #5a9ee7; /* Estados hover, destaques suaves */
+  color: #ffffff; /* Mantém texto branco */
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .export-btn:active {
-  background-color: #006600; /* Verde mais escuro para ativo */
-  color: #ffffff;
+  background-color: #001124; /* Estados ativos/pressed */
+  color: #ffffff; /* Mantém texto branco */
   transform: translateY(0);
 }
 
