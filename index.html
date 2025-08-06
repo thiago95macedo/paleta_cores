@@ -3,431 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Palette Generator - Gerador de Paleta de Cores</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      color: #2d3748;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-
-    .logo {
-      width: 200px;
-      height: 80px;
-      margin: 0 auto 1.5rem;
-      display: block;
-    }
-
-    .title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: #718096;
-      font-weight: 400;
-    }
-
-    .input-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .color-input {
-      width: 200px;
-      height: 50px;
-      padding: 0 1rem;
-      font-size: 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      background: white;
-      color: #2d3748;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s ease;
-    }
-
-    .color-input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .generate-btn {
-      padding: 0 2rem;
-      height: 50px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: white;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .generate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .palette-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .color-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .color-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    }
-
-    .color-preview {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .color-preview::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .color-preview:hover::before {
-      left: 100%;
-    }
-
-    .color-info {
-      padding: 1.5rem;
-    }
-
-    .color-hex {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #2d3748;
-      margin-bottom: 0.5rem;
-      font-family: 'Monaco', 'Menlo', monospace;
-    }
-
-    .color-description {
-      font-size: 0.9rem;
-      color: #718096;
-      line-height: 1.5;
-    }
-
-    .category-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: white;
-      margin: 2rem 0 1rem;
-      text-align: center;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 4rem;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-
-    .footer a {
-      color: #667eea;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer a:hover {
-      color: #764ba2;
-    }
-
-    .copy-notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #48bb78;
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      font-weight: 600;
-      transform: translateX(400px);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-    }
-
-    .copy-notification.show {
-      transform: translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      
-      .title {
-        font-size: 2rem;
-      }
-      
-      .input-group {
-        flex-direction: column;
-      }
-      
-      .color-input {
-        width: 100%;
-        max-width: 300px;
-      }
-      
-      .palette-container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <title>Gerador de Paleta de Cores</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <svg class="logo" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-          </linearGradient>
-          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
-            <stop offset="50%" style="stop-color:#f5576c;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#4facfe;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        
-        <!-- Círculos de cores -->
-        <circle cx="30" cy="40" r="15" fill="#667eea" opacity="0.9"/>
-        <circle cx="50" cy="40" r="15" fill="#f093fb" opacity="0.9"/>
-        <circle cx="70" cy="40" r="15" fill="#4facfe" opacity="0.9"/>
-        <circle cx="90" cy="40" r="15" fill="#f5576c" opacity="0.9"/>
-        
-        <!-- Texto -->
-        <text x="120" y="35" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
-          Palette
-        </text>
-        <text x="120" y="55" font-family="Inter, Arial, sans-serif" font-size="14" fill="#666">
-          Generator
-        </text>
-        
-        <!-- Efeito de brilho -->
-        <circle cx="30" cy="35" r="5" fill="white" opacity="0.3"/>
-        <circle cx="50" cy="35" r="5" fill="white" opacity="0.3"/>
-        <circle cx="70" cy="35" r="5" fill="white" opacity="0.3"/>
-        <circle cx="90" cy="35" r="5" fill="white" opacity="0.3"/>
-      </svg>
-      
-      <h1 class="title">Gerador de Paleta de Cores</h1>
-      <p class="subtitle">Crie paletas harmoniosas para seus projetos de design</p>
-    </header>
+<body onload="generatePalette()">
+  <!-- Logo -->
+  <img src="images/logo.svg" alt="Logo Paleta de Cores" class="logo">
 
-    <!-- Input Section -->
-    <section class="input-section">
-      <div class="input-group">
-        <input type="text" id="colorInput" class="color-input" placeholder="Digite uma cor (ex: #667eea)" value="#667eea">
-        <button class="generate-btn" onclick="generatePalette()">Gerar Paleta</button>
-      </div>
-    </section>
+  <!-- Título -->
+  <h1>Gerador de Paleta de Cores</h1>
 
-    <!-- Palette Container -->
-    <div id="paletteContainer">
-      <!-- As paletas serão geradas aqui dinamicamente -->
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <p>&copy; 2025 <a href="https://thiagomacedo.com.br">Thiago Macêdo</a> - Designer Web</p>
-    </footer>
+  <!-- Campo de Entrada e Botão -->
+  <div class="input-container">
+    <input type="text" id="colorInput" class="color-input" placeholder="Insira a cor principal (ex: #0056b3)" value="#0056b3">
+    <button class="generate-btn" onclick="generatePalette()">Gerar Paleta</button>
   </div>
 
-  <!-- Notification -->
-  <div id="copyNotification" class="copy-notification">
-    Cor copiada para a área de transferência!
+  <!-- Container de Cores -->
+  <div class="container" id="paletteContainer">
+    <!-- A paleta será gerada aqui dinamicamente -->
   </div>
 
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 <a href="https://thiagomacedo.com.br">Thiago Macêdo</a> - Designer Web</p>
+  </footer>
+
+  <!-- Função para Copiar Cor -->
   <script>
-    function showNotification(message) {
-      const notification = document.getElementById('copyNotification');
-      notification.textContent = message;
-      notification.classList.add('show');
-      
-      setTimeout(() => {
-        notification.classList.remove('show');
-      }, 3000);
-    }
-
     function copyColor(color) {
       navigator.clipboard.writeText(color).then(() => {
-        showNotification(`Cor ${color} copiada!`);
-      }).catch(() => {
-        showNotification('Erro ao copiar cor');
+        alert(`Código da cor ${color} copiado para a área de transferência!`);
       });
     }
 
     function generatePalette() {
+      // Obter a cor principal inserida pelo usuário
       const primaryColor = document.getElementById('colorInput').value.trim();
       if (!primaryColor || !/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(primaryColor)) {
-        showNotification('Por favor, insira uma cor válida no formato hexadecimal');
+        alert('Por favor, insira uma cor válida no formato hexadecimal (ex: #0056b3).');
         return;
       }
 
-      const lightColor = lightenColor(primaryColor, 0.3);
-      const darkColor = darkenColor(primaryColor, 0.3);
-      const intermediateColor = lightenColor(primaryColor, 0.15);
-      const complementaryColor = getComplementaryColor(primaryColor);
-      const successColor = '#48bb78';
-      const errorColor = '#f56565';
-      const warningColor = '#ed8936';
-      const neutralColors = ['#f7fafc', '#edf2f7', '#4a5568', '#2d3748'];
-      const accentColor = '#ecc94b';
-      const decorativeColor = '#9f7aea';
-      const mutedColor = getMutedColor(primaryColor);
+      // Gerar variações de cores
+      const lightColor = lightenColor(primaryColor, 0.3); // Azul claro
+      const darkColor = darkenColor(primaryColor, 0.3);   // Azul escuro
+      const intermediateColor = lightenColor(primaryColor, 0.15); // Cor intermediária
+      const complementaryColor = getComplementaryColor(primaryColor); // Cor complementar
+      const successColor = '#28A745'; // Verde - Sucesso
+      const errorColor = '#DC3545';   // Vermelho - Erro
+      const warningColor = '#FFA500'; // Laranja - Alerta
+      const neutralColors = ['#F8F9FA', '#E9ECEF', '#343A40', '#212529']; // Cores neutras
+      const accentColor = '#FFC107';  // Amarelo - Destaque
+      const decorativeColor = '#6F42C1'; // Roxo - Decorativo
+      const mutedColor = getMutedColor(primaryColor); // Cor desaturada
 
+      // Limpar o container antes de gerar a nova paleta
       const paletteContainer = document.getElementById('paletteContainer');
       paletteContainer.innerHTML = '';
 
-      // Cores Principais
-      addCategoryTitle(paletteContainer, '🎨 Cores Principais');
-      addColorCard(paletteContainer, primaryColor, 'Cor Principal - Base do sistema, botões e links principais');
-      addColorCard(paletteContainer, lightColor, 'Cor Clara - Estados hover e destaques suaves');
-      addColorCard(paletteContainer, intermediateColor, 'Cor Intermediária - Elementos secundários');
-      addColorCard(paletteContainer, darkColor, 'Cor Escura - Textos sobre fundos claros');
-      addColorCard(paletteContainer, complementaryColor, 'Cor Complementar - Contraste visual');
+      // Adicionar a cor principal
+      addColorBox(paletteContainer, primaryColor, 'Azul Principal - Cor predominante do sistema, usada em botões principais e links.');
 
-      // Cores Funcionais
-      addCategoryTitle(paletteContainer, '⚡ Cores Funcionais');
-      addColorCard(paletteContainer, successColor, 'Sucesso - Confirmações e estados positivos');
-      addColorCard(paletteContainer, errorColor, 'Erro - Avisos e ações críticas');
-      addColorCard(paletteContainer, warningColor, 'Alerta - Notificações importantes');
+      // Adicionar variações de azul
+      addColorBox(paletteContainer, lightColor, 'Azul Claro - Usado para hover states e destaques suaves.');
+      addColorBox(paletteContainer, intermediateColor, 'Azul Intermediário - Para elementos secundários ou transições suaves.');
+      addColorBox(paletteContainer, darkColor, 'Azul Escuro - Para textos sobre fundos claros ou elementos interativos.');
 
-      // Cores Neutras
-      addCategoryTitle(paletteContainer, '⚪ Cores Neutras');
+      // Adicionar cor complementar
+      addColorBox(paletteContainer, complementaryColor, 'Cor Complementar - Contraste visual.');
+
+      // Adicionar cores funcionais
+      addColorBox(paletteContainer, successColor, 'Verde - Indica sucesso, confirmações ou estados positivos.');
+      addColorBox(paletteContainer, errorColor, 'Vermelho - Usado para erros, avisos ou ações críticas.');
+      addColorBox(paletteContainer, warningColor, 'Laranja - Cor complementar para alertas ou notificações.');
+
+      // Adicionar cores neutras
       neutralColors.forEach((color, index) => {
-        const descriptions = [
-          'Cinza Claro - Fundos gerais e áreas de baixa prioridade',
-          'Cinza Médio - Divisórias e bordas',
-          'Cinza Escuro - Textos principais',
-          'Preto - Alto contraste e textos importantes'
-        ];
-        addColorCard(paletteContainer, color, descriptions[index]);
+        let description = '';
+        if (index === 0) description = 'Cinza Claro - Fundo geral ou áreas de baixa prioridade.';
+        else if (index === 1) description = 'Cinza Médio - Divisórias, bordas ou fundos de cards.';
+        else if (index === 2) description = 'Cinza Escuro - Textos principais ou elementos de navegação.';
+        else if (index === 3) description = 'Preto - Textos importantes ou alto contraste.';
+        addColorBox(paletteContainer, color, description);
       });
 
-      // Cores Adicionais
-      addCategoryTitle(paletteContainer, '✨ Cores Adicionais');
-      addColorCard(paletteContainer, accentColor, 'Acento - Destaques em badges e ícones');
-      addColorCard(paletteContainer, decorativeColor, 'Decorativo - Elementos especiais');
-      addColorCard(paletteContainer, mutedColor, 'Desaturada - Elementos secundários');
+      // Adicionar cores adicionais
+      addColorBox(paletteContainer, accentColor, 'Amarelo - Acentos para chamar atenção em badges ou ícones.');
+      addColorBox(paletteContainer, decorativeColor, 'Roxo - Elementos decorativos ou menos frequentes.');
+      addColorBox(paletteContainer, mutedColor, 'Cor Desaturada - Para elementos secundários ou de fundo.');
     }
 
-    function addCategoryTitle(container, title) {
-      const titleElement = document.createElement('h2');
-      titleElement.className = 'category-title';
-      titleElement.textContent = title;
-      container.appendChild(titleElement);
-    }
+    function addColorBox(container, color, description) {
+      const colorItem = document.createElement('div');
+      colorItem.className = 'color-item';
 
-    function addColorCard(container, color, description) {
-      const card = document.createElement('div');
-      card.className = 'color-card';
+      const colorBox = document.createElement('div');
+      colorBox.className = 'color-box';
+      colorBox.style.backgroundColor = color;
+      colorBox.textContent = color; // Código da cor dentro do retângulo
+      colorBox.onclick = () => copyColor(color);
 
-      const preview = document.createElement('div');
-      preview.className = 'color-preview';
-      preview.style.backgroundColor = color;
-      preview.textContent = color;
-      preview.onclick = () => copyColor(color);
-
-      const info = document.createElement('div');
-      info.className = 'color-info';
-
-      const hex = document.createElement('div');
-      hex.className = 'color-hex';
-      hex.textContent = color;
-
-      const desc = document.createElement('div');
-      desc.className = 'color-description';
+      const desc = document.createElement('span');
+      desc.className = 'description';
       desc.textContent = description;
 
-      info.appendChild(hex);
-      info.appendChild(desc);
-      card.appendChild(preview);
-      card.appendChild(info);
-      container.appendChild(card);
+      colorItem.appendChild(colorBox);
+      colorItem.appendChild(desc);
+      container.appendChild(colorItem);
     }
 
     function lightenColor(color, amount) {
@@ -481,11 +164,6 @@
 
       return `#${newR}${newG}${newB}`;
     }
-
-    // Gerar paleta inicial
-    window.onload = function() {
-      generatePalette();
-    };
   </script>
 </body>
 </html>

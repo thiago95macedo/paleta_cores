@@ -1,0 +1,18 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Círculos de cores representando uma paleta -->
+  <circle cx="25" cy="40" r="12" fill="#0056b3" opacity="0.9"/>
+  <circle cx="45" cy="40" r="12" fill="#28A745" opacity="0.9"/>
+  <circle cx="65" cy="40" r="12" fill="#DC3545" opacity="0.9"/>
+  <circle cx="85" cy="40" r="12" fill="#FFC107" opacity="0.9"/>
+  
+  <!-- Linha conectando os círculos -->
+  <line x1="37" y1="40" x2="73" y2="40" stroke="#0056b3" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Texto -->
+  <text x="110" y="35" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0056b3">
+    Paleta
+  </text>
+  <text x="110" y="50" font-family="Arial, sans-serif" font-size="14" fill="#666">
+    de Cores
+  </text>
+</svg> 
