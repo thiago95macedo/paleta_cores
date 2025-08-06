@@ -189,62 +189,152 @@ function generateOptimizedColor(h, s, l) {
   return rgbToHex(rgb[0], rgb[1], rgb[2]);
 }
 
-// Sistema de cores profissional totalmente dinâmico
+// Cores de feedback fixas e universalmente reconhecidas
+const FEEDBACK_COLORS = {
+  success: '#16a34a',    // Verde seguro - confirmações, sucessos
+  error: '#dc2626',      // Vermelho confiável - erros críticos
+  warning: '#eab308',    // Amarelo/laranja - alertas, avisos
+  info: '#3b82f6'        // Azul informativo - informações neutras
+};
+
+// Descrições funcionais e objetivas
+const COLOR_DESCRIPTIONS = {
+  // Principais
+  primary: 'Ações primárias, botões principais, links ativos',
+  primaryLight: 'Estados hover, destaques suaves, backgrounds secundários',
+  primaryDark: 'Estados ativos/pressed, overlays, headers',
+  
+  // Feedback (cores fixas)
+  success: 'Confirmações, notificações positivas, status de sucesso',
+  error: 'Erros críticos, validações negativas, alertas de falha',
+  warning: 'Avisos importantes, alertas não-críticos, atenção',
+  info: 'Informações contextuais, tooltips, mensagens neutras',
+  
+  // Harmônicos (nomes funcionais)
+  analogous1: 'Elementos secundários, ícones de apoio, gráficos',
+  analogous2: 'Diferenciação sutil, bordas especiais, micro-interações',
+  triadic1: 'Acentos visuais, elementos distintivos, CTAs secundários',
+  triadic2: 'Variações temáticas, categorização, elementos decorativos',
+  complementary: 'Contraste máximo, elementos opostos, destaque extremo',
+  
+  // Neutros
+  white: 'Fundo principal, cards, áreas de conteúdo',
+  gray100: 'Backgrounds alternativos, superfícies secundárias',
+  gray200: 'Bordas suaves, divisores sutis',
+  gray300: 'Divisores padrão, bordas de campos',
+  gray400: 'Bordas destacadas, elementos desabilitados',
+  gray500: 'Textos secundários, legendas, metadados',
+  gray600: 'Ícones padrão, textos terciários',
+  gray700: 'Textos de apoio, labels',
+  gray800: 'Textos principais, conteúdo primário',
+  gray900: 'Títulos, cabeçalhos, textos importantes',
+  black: 'Textos de máximo contraste, elementos críticos'
+};
+
+// Harmônicos melhorados com controle perceptual
+function generateImprovedHarmonics(primaryHsl) {
+  const [h, s, l] = primaryHsl;
+  
+  return {
+    // Análogos: ±25° no matiz, ajustes sutis em S/L para harmonia
+    analogous1: generateOptimizedColor(
+      (h - 25 + 360) % 360,
+      Math.min(100, s + 8),
+      Math.max(0, l - 3)
+    ),
+    analogous2: generateOptimizedColor(
+      (h + 25) % 360,
+      Math.min(100, s + 8),
+      Math.max(0, l - 3)
+    ),
+    
+    // Triádicos: ±120°, reduz saturação para evitar conflitos
+    triadic1: generateOptimizedColor(
+      (h + 120) % 360,
+      Math.max(0, s - 10),
+      Math.max(0, l - 5)
+    ),
+    triadic2: generateOptimizedColor(
+      (h + 240) % 360,
+      Math.max(0, s - 10),
+      Math.max(0, l - 5)
+    ),
+    
+    // Complementar: 180°, reduz saturação para suavizar contraste
+    complementary: generateOptimizedColor(
+      (h + 180) % 360,
+      Math.max(0, s - 15),
+      Math.max(0, l - 8)
+    )
+  };
+}
+
+// Escala de neutros inteligente com temperatura sutil da cor primária
+function generateIntelligentNeutrals(primaryHsl) {
+  const [h, s, l] = primaryHsl;
+  
+  const neutralDefinitions = [
+    { key: 'white', lightness: 100, saturation: 0 },
+    { key: 'gray100', lightness: 96, saturation: 0 },
+    { key: 'gray200', lightness: 93, saturation: 0 },
+    { key: 'gray300', lightness: 88, saturation: 0 },
+    { key: 'gray400', lightness: 74, saturation: 0 },
+    { key: 'gray500', lightness: 62, saturation: 0 },
+    { key: 'gray600', lightness: 46, saturation: 0 },
+    { key: 'gray700', lightness: 38, saturation: 0 },
+    { key: 'gray800', lightness: 26, saturation: 0 },
+    { key: 'gray900', lightness: 13, saturation: 0 },
+    { key: 'black', lightness: 0, saturation: 0 }
+  ];
+  
+  const neutrals = {};
+  
+  neutralDefinitions.forEach(neutral => {
+    if (neutral.lightness > 10 && neutral.lightness < 90) {
+      // Para tons médios, adicionar temperatura sutil da cor primária
+      neutrals[neutral.key] = generateOptimizedColor(
+        h, // Usar matiz da primária para dar temperatura
+        Math.min(8, s * 0.1), // Saturação muito baixa
+        neutral.lightness
+      );
+    } else {
+      // Branco e preto puros
+      neutrals[neutral.key] = generateOptimizedColor(0, 0, neutral.lightness);
+    }
+  });
+  
+  return neutrals;
+}
+
+// Sistema de cores profissional refatorado
 function generateProfessionalPalette(primaryColor) {
   const rgb = hexToRgb(primaryColor);
-  const [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+  const primaryHsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+  const [h, s, l] = primaryHsl;
 
-  // Cores de feedback dinâmicas (baseadas na cor principal)
-  const feedbackColors = {
-    // Sucesso: verde baseado na luminosidade da cor principal
-    success: generateOptimizedColor(120, Math.min(100, s + 10), Math.max(0, l - 5)),
-    // Erro: vermelho baseado na luminosidade da cor principal
-    error: generateOptimizedColor(0, Math.min(100, s + 10), Math.max(0, l - 5)),
-    // Aviso: laranja baseado na luminosidade da cor principal
-    warning: generateOptimizedColor(30, Math.min(100, s + 10), Math.max(0, l - 5)),
-    // Informação: azul baseado na luminosidade da cor principal
-    info: generateOptimizedColor(210, Math.min(100, s + 10), Math.max(0, l - 5))
-  };
-
-  // Cores principais otimizadas
+  // 1. Cores principais com variações controladas
   const primaryColors = {
     primary: primaryColor,
-    // Claro: aumentar luminosidade E reduzir saturação
-    primaryLight: generateOptimizedColor(h, Math.max(0, s - 20), Math.min(100, l + 25)),
-    // Escuro: reduzir luminosidade, aumentar saturação
-    primaryDark: generateOptimizedColor(h, Math.min(100, s + 10), Math.max(0, l - 30))
+    primaryLight: generateOptimizedColor(
+      h,
+      Math.max(0, s - 25), // Reduz saturação significativamente
+      Math.min(100, l + 28) // Aumenta luminância
+    ),
+    primaryDark: generateOptimizedColor(
+      h,
+      Math.min(100, s + 8), // Leve aumento na saturação
+      Math.max(0, l - 28)   // Reduz luminância
+    )
   };
 
-  // Harmônicos suaves e equilibrados (evitando tons terrosos)
-  const harmonicColors = {
-    // Análogos: tons azul-esverdeados suaves
-    analogous1: generateOptimizedColor((h + 20) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
-    analogous2: generateOptimizedColor((h - 20 + 360) % 360, Math.min(100, s + 5), Math.max(0, l - 5)),
-    // Triádicos: tons equilibrados, evitando marrom
-    triadic1: generateOptimizedColor((h + 120) % 360, Math.min(100, s + 10), Math.max(0, l - 5)),
-    triadic2: generateOptimizedColor((h + 240) % 360, Math.min(100, s + 10), Math.max(0, l - 5)),
-    // Complementar: otimizado para contraste suave
-    complementary: generateOptimizedColor((h + 180) % 360, Math.min(100, s + 15), Math.max(0, l - 10))
-  };
+  // 2. Cores de feedback FIXAS (não derivadas da primária)
+  const feedbackColors = FEEDBACK_COLORS;
 
-  // Escala de neutros dinâmica (baseada na luminosidade da cor principal)
-  const neutralColors = {
-    // Branco sempre branco
-    white: '#ffffff',
-    // Cinzas baseados na luminosidade da cor principal
-    gray50: generateOptimizedColor(0, 0, Math.min(100, l + 45)),
-    gray100: generateOptimizedColor(0, 0, Math.min(100, l + 40)),
-    gray200: generateOptimizedColor(0, 0, Math.min(100, l + 35)),
-    gray300: generateOptimizedColor(0, 0, Math.min(100, l + 30)),
-    gray400: generateOptimizedColor(0, 0, Math.min(100, l + 25)),
-    gray500: generateOptimizedColor(0, 0, Math.min(100, l + 20)),
-    gray600: generateOptimizedColor(0, 0, Math.min(100, l + 15)),
-    gray700: generateOptimizedColor(0, 0, Math.min(100, l + 10)),
-    gray800: generateOptimizedColor(0, 0, Math.min(100, l + 5)),
-    gray900: generateOptimizedColor(0, 0, Math.min(100, l)),
-    // Preto sempre preto
-    black: '#000000'
-  };
+  // 3. Harmônicos melhorados
+  const harmonicColors = generateImprovedHarmonics(primaryHsl);
+
+  // 4. Neutros inteligentes
+  const neutralColors = generateIntelligentNeutrals(primaryHsl);
 
   return {
     ...primaryColors,
@@ -266,35 +356,35 @@ function generatePalette() {
   paletteContainer.innerHTML = '';
 
   // 1. CORES PRINCIPAIS
-  addColorBox(paletteContainer, palette.primary, 'Botão/Ação Principal');
-  addColorBox(paletteContainer, palette.primaryLight, 'Hover/Destaque');
-  addColorBox(paletteContainer, palette.primaryDark, 'Ativo/Foco');
+  addColorBox(paletteContainer, palette.primary, COLOR_DESCRIPTIONS.primary);
+  addColorBox(paletteContainer, palette.primaryLight, COLOR_DESCRIPTIONS.primaryLight);
+  addColorBox(paletteContainer, palette.primaryDark, COLOR_DESCRIPTIONS.primaryDark);
 
-  // 2. CORES DE FEEDBACK (fixas e otimizadas)
-  addColorBox(paletteContainer, palette.success, 'Sucesso');
-  addColorBox(paletteContainer, palette.error, 'Erro');
-  addColorBox(paletteContainer, palette.warning, 'Aviso');
-  addColorBox(paletteContainer, palette.info, 'Informação');
+  // 2. CORES DE FEEDBACK (fixas e universalmente reconhecidas)
+  addColorBox(paletteContainer, palette.success, COLOR_DESCRIPTIONS.success);
+  addColorBox(paletteContainer, palette.error, COLOR_DESCRIPTIONS.error);
+  addColorBox(paletteContainer, palette.warning, COLOR_DESCRIPTIONS.warning);
+  addColorBox(paletteContainer, palette.info, COLOR_DESCRIPTIONS.info);
 
-  // 3. CORES DE HARMONIA (suaves e equilibradas)
-  addColorBox(paletteContainer, palette.analogous1, 'Ícones');
-  addColorBox(paletteContainer, palette.analogous2, 'Gráficos');
-  addColorBox(paletteContainer, palette.triadic1, 'Acentos');
-  addColorBox(paletteContainer, palette.triadic2, 'Contraste');
-  addColorBox(paletteContainer, palette.complementary, 'Destaques');
+  // 3. CORES DE HARMONIA (melhoradas e funcionais)
+  addColorBox(paletteContainer, palette.analogous1, COLOR_DESCRIPTIONS.analogous1);
+  addColorBox(paletteContainer, palette.analogous2, COLOR_DESCRIPTIONS.analogous2);
+  addColorBox(paletteContainer, palette.triadic1, COLOR_DESCRIPTIONS.triadic1);
+  addColorBox(paletteContainer, palette.triadic2, COLOR_DESCRIPTIONS.triadic2);
+  addColorBox(paletteContainer, palette.complementary, COLOR_DESCRIPTIONS.complementary);
 
-  // 4. CORES NEUTRAS (escala profissional)
-  addColorBox(paletteContainer, palette.white, 'Fundo');
-  addColorBox(paletteContainer, palette.gray100, 'Fundo Alternativo');
-  addColorBox(paletteContainer, palette.gray200, 'Bordas Claras');
-  addColorBox(paletteContainer, palette.gray300, 'Divisores');
-  addColorBox(paletteContainer, palette.gray400, 'Bordas');
-  addColorBox(paletteContainer, palette.gray500, 'Textos Secundários');
-  addColorBox(paletteContainer, palette.gray600, 'Ícones');
-  addColorBox(paletteContainer, palette.gray700, 'Textos Terciários');
-  addColorBox(paletteContainer, palette.gray800, 'Textos Principais');
-  addColorBox(paletteContainer, palette.gray900, 'Títulos');
-  addColorBox(paletteContainer, palette.black, 'Texto Principal');
+  // 4. CORES NEUTRAS (inteligentes com temperatura sutil)
+  addColorBox(paletteContainer, palette.white, COLOR_DESCRIPTIONS.white);
+  addColorBox(paletteContainer, palette.gray100, COLOR_DESCRIPTIONS.gray100);
+  addColorBox(paletteContainer, palette.gray200, COLOR_DESCRIPTIONS.gray200);
+  addColorBox(paletteContainer, palette.gray300, COLOR_DESCRIPTIONS.gray300);
+  addColorBox(paletteContainer, palette.gray400, COLOR_DESCRIPTIONS.gray400);
+  addColorBox(paletteContainer, palette.gray500, COLOR_DESCRIPTIONS.gray500);
+  addColorBox(paletteContainer, palette.gray600, COLOR_DESCRIPTIONS.gray600);
+  addColorBox(paletteContainer, palette.gray700, COLOR_DESCRIPTIONS.gray700);
+  addColorBox(paletteContainer, palette.gray800, COLOR_DESCRIPTIONS.gray800);
+  addColorBox(paletteContainer, palette.gray900, COLOR_DESCRIPTIONS.gray900);
+  addColorBox(paletteContainer, palette.black, COLOR_DESCRIPTIONS.black);
 }
 
 function addColorBox(container, color, description) {
