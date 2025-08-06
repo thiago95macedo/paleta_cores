@@ -116,6 +116,32 @@ footer a:hover {
   text-decoration: underline;
 }
 
+/* Notificação Toast */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28A745;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.toast-notification.show {
+  transform: translateX(0);
+}
+
+.toast-notification.error {
+  background: #DC3545;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
   .container {
@@ -243,5 +269,17 @@ footer a:hover {
     padding: 10px 20px;
     font-size: 13px;
     min-width: 120px;
+  }
+  
+  .toast-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+    transform: translateY(-100px);
+  }
+  
+  .toast-notification.show {
+    transform: translateY(0);
   }
 } 

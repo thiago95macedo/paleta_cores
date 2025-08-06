@@ -26,11 +26,32 @@
     <p>&copy; 2025 <a href="https://thiagomacedo.com.br">Thiago Macêdo</a></p>
   </footer>
 
+  <!-- Notificação Toast -->
+  <div id="toastNotification" class="toast-notification"></div>
+
   <!-- Função para Copiar Cor -->
   <script>
+    function showToast(message, isError = false) {
+      const toast = document.getElementById('toastNotification');
+      toast.textContent = message;
+      toast.className = `toast-notification ${isError ? 'error' : ''}`;
+      
+      // Mostrar a notificação
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      // Esconder a notificação após 3 segundos
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
     function copyColor(color) {
       navigator.clipboard.writeText(color).then(() => {
-        alert(`Código da cor ${color} copiado para a área de transferência!`);
+        showToast(`Cor ${color} copiada!`);
+      }).catch(() => {
+        showToast('Erro ao copiar cor', true);
       });
     }
 
